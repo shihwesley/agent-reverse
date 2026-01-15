@@ -8,3 +8,6 @@ dist/
 
 # Local workflow cache
 workflow-cache.json
+
+# Git worktrees
+.worktrees/
