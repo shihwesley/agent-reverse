@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Temp storage for cloned repos
+.tmp/
+
+# Local workflow cache
+workflow-cache.json
