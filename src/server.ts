@@ -6,7 +6,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { registerFetchTool } from './tools/fetch.js';
 import { registerAnalyzeTool } from './tools/analyze.js';
 import { registerManifestTools } from './tools/manifest.js';
-// import { registerInstallTool } from './tools/install.js';
+import { registerInstallTool } from './tools/install.js';
 
 const server = new McpServer({
   name: 'agent-reverse',
@@ -17,7 +17,7 @@ const server = new McpServer({
 registerFetchTool(server);
 registerAnalyzeTool(server);
 registerManifestTools(server);
-// registerInstallTool(server);
+registerInstallTool(server);
 
 async function main() {
   const transport = new StdioServerTransport();

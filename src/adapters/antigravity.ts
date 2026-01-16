@@ -9,5 +9,5 @@ export async function installForAntigravity(
   workspaceRoot: string
 ): Promise<InstallResult> {
   // TODO: Implement in phase2/multi-agent branch
-  return { filesWritten: [], configUpdated: false };
+  return { filesWritten: [], configUpdated: false, errors: ['Antigravity adapter not yet implemented'] };
 }

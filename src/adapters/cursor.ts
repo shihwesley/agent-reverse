@@ -9,5 +9,5 @@ export async function installForCursor(
   workspaceRoot: string
 ): Promise<InstallResult> {
   // TODO: Implement in phase2/multi-agent branch
-  return { filesWritten: [], configUpdated: false };
+  return { filesWritten: [], configUpdated: false, errors: ['Cursor adapter not yet implemented'] };
 }
