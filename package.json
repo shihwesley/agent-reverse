@@ -5,7 +5,8 @@
   "type": "module",
   "main": "dist/server.js",
   "bin": {
-    "agent-reverse": "dist/server.js"
+    "agent-reverse": "dist/cli.js",
+    "agent-reverse-server": "dist/server.js"
   },
   "scripts": {
     "build": "tsc",
