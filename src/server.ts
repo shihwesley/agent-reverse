@@ -7,6 +7,8 @@ import { registerFetchTool } from './tools/fetch.js';
 import { registerAnalyzeTool } from './tools/analyze.js';
 import { registerManifestTools } from './tools/manifest.js';
 import { registerInstallTool } from './tools/install.js';
+// Tool imports (Phase 2)
+import { registerSyncTools } from './tools/sync.js';
 
 const server = new McpServer({
   name: 'agent-reverse',
@@ -18,6 +20,7 @@ registerFetchTool(server);
 registerAnalyzeTool(server);
 registerManifestTools(server);
 registerInstallTool(server);
+registerSyncTools(server);
 
 async function main() {
   const transport = new StdioServerTransport();
