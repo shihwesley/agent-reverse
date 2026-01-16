@@ -4,6 +4,8 @@ export type CapabilityStatus = 'installed' | 'superseded' | 'pending';
 
 export type TargetAgent = 'claude-code' | 'antigravity' | 'cursor' | 'custom';
 
+export type InstallScope = 'project' | 'global';
+
 export interface Capability {
   id: string;
   source: string;          // GitHub URL

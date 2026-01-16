@@ -6,9 +6,11 @@ import { z } from 'zod';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { installForClaudeCode } from '../adapters/claude.js';
+import { installForCursor } from '../adapters/cursor.js';
+import { installForAntigravity } from '../adapters/antigravity.js';
 import { addCapability } from './manifest.js';
 import { parseSkillFile } from '../parsers/skill.js';
-import type { TargetAgent, ParsedSkill } from '../types.js';
+import type { TargetAgent, ParsedSkill, InstallScope } from '../types.js';
 
 export interface InstallOptions {
   skillPath: string;        // Path to skill file in cloned repo
@@ -18,6 +20,7 @@ export interface InstallOptions {
   capabilityId: string;     // ID for this capability
   targetAgent: TargetAgent; // Target agent system
   workspaceRoot: string;    // Where to install
+  scope?: InstallScope;     // For Antigravity: 'project' or 'global'
 }
 
 export interface InstallResultFull {
@@ -63,9 +66,24 @@ export async function installCapability(options: InstallOptions): Promise<Instal
         break;
 
       case 'cursor':
+        installResult = await installForCursor(
+          skill,
+          options.workspaceRoot,
+          options.capabilityId
+        );
+        break;
+
       case 'antigravity':
+        installResult = await installForAntigravity(
+          skill,
+          options.workspaceRoot,
+          options.capabilityId,
+          options.scope ?? 'project'
+        );
+        break;
+
       case 'custom':
-        result.errors.push(`Target agent '${options.targetAgent}' not yet supported (Phase 2)`);
+        result.errors.push(`Target agent 'custom' not yet supported`);
         return result;
 
       default:
@@ -123,9 +141,12 @@ export function registerInstallTool(server: McpServer): void {
           .default('claude-code')
           .describe('Target agent system'),
         workspaceRoot: z.string().optional().describe('Workspace root (defaults to cwd)'),
+        scope: z.enum(['project', 'global'])
+          .optional()
+          .describe('Install scope for Antigravity: project-local or user-global'),
       },
     },
-    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot }) => {
+    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope }) => {
       const result = await installCapability({
         skillPath,
         sourceRepoPath,
@@ -134,6 +155,7 @@ export function registerInstallTool(server: McpServer): void {
         capabilityId,
         targetAgent: targetAgent as TargetAgent,
         workspaceRoot: workspaceRoot || process.cwd(),
+        scope: scope as InstallScope | undefined,
       });
 
       return {
