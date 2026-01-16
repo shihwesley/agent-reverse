@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "repos": [
+    {
+      "url": "https://github.com/anthropics/claude-code",
+      "capabilities": ["commit", "pr-review", "code-review"],
+      "keywords": ["commit", "pull request", "review", "git"]
+    },
+    {
+      "url": "https://github.com/modelcontextprotocol/servers",
+      "capabilities": ["filesystem", "github", "slack", "memory"],
+      "keywords": ["file", "github", "slack", "memory", "storage"]
+    },
+    {
+      "url": "https://github.com/anthropics/anthropic-cookbook",
+      "capabilities": ["prompts", "examples", "patterns"],
+      "keywords": ["prompt", "example", "pattern", "template"]
+    }
+  ]
+}

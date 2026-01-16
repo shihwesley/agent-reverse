@@ -39,25 +39,29 @@ The result: **a leaner, faster, smarter agent workflow**.
 7. **Dependency Resolution**: Automatically install dependent capabilities if Capability A requires Capability B.
 8. **Version Management**: Check for updates against source repo `HEAD`; support rollback/uninstall.
 9. **Audit & Slim**: Scan an existing setup (local folders or list of repo URLs) for all installed skills/plugins/MCPs, identify duplicates and bloat, and propose a consolidation plan.
-10. **Workflow Gap Detection**: Analyze user's current workflow to identify friction points and missing behaviors, then either extract solutions from known repos or generate config additions.
+10. **Research Interpreter**: Ability to read a technical document/article/URL and synthesize a code-based "Skill" or "Tool" based on the abstract concepts described.
+11. **Workflow Gap Detection**: Analyze user's current workflow to identify friction points and missing behaviors, then either extract solutions from known repos or generate config additions.
 
 ## Workflow Gap Detection (Detail)
 
 AgentReverse doesn't just extract features from external repos — it learns from user interactions to identify **what's missing**.
 
 **How it works:**
+
 1. **Observe friction**: When a user manually does something repeatedly (e.g., "check git state on session start"), log it as a pattern.
 2. **Match to solutions**: Search known repos/skills for existing solutions to the observed friction.
 3. **Generate if needed**: If no external solution exists, generate the minimal config change (e.g., add to CLAUDE.md).
 4. **Track improvements**: Record what was added and why, so the manifest becomes a history of workflow optimizations.
 
 **Example workflow gaps:**
+
 - Session resume not automatic → Add git state check to CLAUDE.md
 - Repeated web fetches for same docs → Add doc caching behavior
 - Manual worktree creation → Extract/generate worktree skill
 - Forgetting to run tests → Add pre-commit reminder
 
 **Output**: Each detected gap becomes either:
+
 - An extracted capability (from external repo)
 - A generated config snippet (for CLAUDE.md/agent.md)
 - A logged "known friction" for future resolution
