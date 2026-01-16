@@ -16,6 +16,7 @@ AgentReverse combats this by:
 2. **Synthesizing duplicates** — merging overlapping capabilities into a single, optimized version.
 3. **Centralizing knowledge** — one manifest, one source of truth, minimal file sprawl.
 4. **Invisible integration** — extracted features are documented so the agent *just knows* when to use them. Users don't need to remember special prompts or tool names.
+5. **Workflow gap detection** — analyze user's current setup to identify missing behaviors, friction points, and optimization opportunities. When a gap is discovered (e.g., "session resume wasn't automatic"), AgentReverse captures this as a learnable pattern and either extracts a solution from known repos or suggests adding it to the user's config.
 
 The result: **a leaner, faster, smarter agent workflow**.
 
@@ -38,6 +39,28 @@ The result: **a leaner, faster, smarter agent workflow**.
 7. **Dependency Resolution**: Automatically install dependent capabilities if Capability A requires Capability B.
 8. **Version Management**: Check for updates against source repo `HEAD`; support rollback/uninstall.
 9. **Audit & Slim**: Scan an existing setup (local folders or list of repo URLs) for all installed skills/plugins/MCPs, identify duplicates and bloat, and propose a consolidation plan.
+10. **Workflow Gap Detection**: Analyze user's current workflow to identify friction points and missing behaviors, then either extract solutions from known repos or generate config additions.
+
+## Workflow Gap Detection (Detail)
+
+AgentReverse doesn't just extract features from external repos — it learns from user interactions to identify **what's missing**.
+
+**How it works:**
+1. **Observe friction**: When a user manually does something repeatedly (e.g., "check git state on session start"), log it as a pattern.
+2. **Match to solutions**: Search known repos/skills for existing solutions to the observed friction.
+3. **Generate if needed**: If no external solution exists, generate the minimal config change (e.g., add to CLAUDE.md).
+4. **Track improvements**: Record what was added and why, so the manifest becomes a history of workflow optimizations.
+
+**Example workflow gaps:**
+- Session resume not automatic → Add git state check to CLAUDE.md
+- Repeated web fetches for same docs → Add doc caching behavior
+- Manual worktree creation → Extract/generate worktree skill
+- Forgetting to run tests → Add pre-commit reminder
+
+**Output**: Each detected gap becomes either:
+- An extracted capability (from external repo)
+- A generated config snippet (for CLAUDE.md/agent.md)
+- A logged "known friction" for future resolution
 
 ## Target Audience
 
