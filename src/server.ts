@@ -16,6 +16,8 @@ import { registerSuggesterTools } from './tools/suggester.js';
 import { registerAuditTools } from './tools/audit.js';
 import { registerConflictTools } from './tools/conflict.js';
 import { registerDepsTools } from './tools/deps.js';
+// Tool imports (Phase 5)
+import { registerWebTools } from './tools/web.js';
 
 const server = new McpServer({
   name: 'agent-reverse',
@@ -33,6 +35,7 @@ registerSuggesterTools(server);
 registerAuditTools(server);
 registerConflictTools(server);
 registerDepsTools(server);
+registerWebTools(server);
 
 async function main() {
   const transport = new StdioServerTransport();

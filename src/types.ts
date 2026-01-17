@@ -130,3 +130,39 @@ export interface FetchResult {
   commit: string;
   files: string[];
 }
+
+// Web synthesis types
+
+export interface WebArticle {
+  url: string;
+  title: string;
+  content: string;
+  headings: string[];
+  codeBlocks: string[];
+  fetchedAt: string;
+}
+
+export interface ExtractedConcept {
+  coreIdea: string;
+  keyPoints: string[];
+  suggestedName: string;
+  category: string;
+  relatedTools?: string[];
+}
+
+export interface SynthesizedSkill {
+  name: string;
+  description: string;
+  content: string;
+  sourceUrl: string;
+  concept: ExtractedConcept;
+}
+
+export interface WebInterpretResult {
+  success: boolean;
+  article?: WebArticle;
+  concept?: ExtractedConcept;
+  skill?: SynthesizedSkill;
+  skillPath?: string;
+  error?: string;
+}
