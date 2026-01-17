@@ -49,6 +49,36 @@ export interface ExtractedMcpTool {
   lineNumber: number;
 }
 
+// Audit types
+
+export interface DuplicateGroup {
+  functionality: string;
+  capabilities: string[];
+  recommendation: string;
+}
+
+export type BloatReason = 'orphan' | 'outdated' | 'unused' | 'superseded';
+
+export interface BloatEntry {
+  id: string;
+  reason: BloatReason;
+  details: string;
+}
+
+export interface AuditStats {
+  total: number;
+  installed: number;
+  superseded: number;
+  orphaned: number;
+}
+
+export interface AuditResult {
+  duplicates: DuplicateGroup[];
+  bloat: BloatEntry[];
+  stats: AuditStats;
+  consolidationPlan?: string;
+}
+
 export interface RepoAnalysis {
   skills: ParsedSkill[];
   tools: ParsedTool[];
