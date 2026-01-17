@@ -79,6 +79,25 @@ export interface AuditResult {
   consolidationPlan?: string;
 }
 
+// Conflict types
+
+export type ConflictStrategy = 'replace' | 'keep_both' | 'synthesize';
+
+export interface ConflictInfo {
+  hasConflict: boolean;
+  existing?: Capability;
+  incoming?: Capability;
+  options: ConflictStrategy[];
+}
+
+export interface ConflictResolution {
+  success: boolean;
+  result: 'replaced' | 'renamed' | 'synthesized';
+  superseded?: string[];
+  newCapability?: Capability;
+  synthesisReport?: string;
+}
+
 export interface RepoAnalysis {
   skills: ParsedSkill[];
   tools: ParsedTool[];
