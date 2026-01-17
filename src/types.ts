@@ -98,6 +98,23 @@ export interface ConflictResolution {
   synthesisReport?: string;
 }
 
+// Dependency types
+
+export interface DepsCheckResult {
+  satisfied: boolean;
+  missing: string[];
+}
+
+export interface DepsResolveResult {
+  capability: string;
+  dependencies: string[];
+  missing: string[];
+  installOrder: string[];
+  installed?: string[];
+  failed?: string[];
+  hasCycle?: boolean;
+}
+
 export interface RepoAnalysis {
   skills: ParsedSkill[];
   tools: ParsedTool[];
