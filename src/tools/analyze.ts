@@ -7,6 +7,7 @@ import { readFile, readdir, stat } from 'fs/promises';
 import { join } from 'path';
 import { parseSkillFile, isSkillPath } from '../parsers/skill.js';
 import { parseReadme } from '../parsers/readme.js';
+import { scanDirectoryForMcpTools, toAnalyzeFormat } from '../parsers/mcp.js';
 import type { RepoAnalysis, ParsedSkill, ParsedTool } from '../types.js';
 
 async function findFiles(
@@ -100,6 +101,15 @@ export async function analyzeRepo(repoPath: string): Promise<RepoAnalysis> {
   const mcpConfig = await readFileContent(repoPath, '.mcp.json');
   if (mcpConfig) {
     plugins.push('mcp-configured');
+  }
+
+  // Extract MCP tools from server files
+  if (plugins.includes('mcp-server')) {
+    const allFiles = await findFiles(repoPath, (p) =>
+      p.endsWith('.ts') || p.endsWith('.js')
+    );
+    const extractedTools = await scanDirectoryForMcpTools(repoPath, allFiles);
+    tools.push(...toAnalyzeFormat(extractedTools));
   }
 
   // Dedupe dependencies

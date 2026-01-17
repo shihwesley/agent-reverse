@@ -41,6 +41,14 @@ export interface ParsedTool {
   inputSchema?: Record<string, unknown>;
 }
 
+export interface ExtractedMcpTool {
+  name: string;
+  description: string;
+  inputSchema: Record<string, unknown>;
+  filePath: string;
+  lineNumber: number;
+}
+
 export interface RepoAnalysis {
   skills: ParsedSkill[];
   tools: ParsedTool[];
