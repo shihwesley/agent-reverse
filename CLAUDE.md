@@ -39,13 +39,14 @@ This ensures:
 
 ### Current Progress
 
-**Completed:**
+**All phases complete (v0.1.0 MVP):**
 - Phase 1: MCP Core (repo_fetch, repo_analyze, manifest CRUD, install_capability)
 - Phase 2: Multi-Agent + Sync (Cursor/Antigravity adapters, manifest_sync, check_updates)
 - Phase 3: Skills Layer (skill command, CLI, observer, suggester)
-
-**Next:**
 - Phase 4: Advanced (conflict resolution, audit, deep-parser, deps)
+- Phase 5: Web Synthesis (web_interpret, web_fetch)
+
+**25 MCP tools registered.** See [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md) for full architecture.
 
 ## Architecture
 
@@ -54,21 +55,26 @@ src/
 ├── server.ts           # MCP server entry
 ├── cli.ts              # CLI entry
 ├── types.ts            # Shared types
-├── tools/              # MCP tools
+├── tools/              # MCP tools (11 files, 25 tools)
 │   ├── fetch.ts        # repo_fetch, repo_cleanup
 │   ├── analyze.ts      # repo_analyze
 │   ├── manifest.ts     # manifest_* tools
 │   ├── install.ts      # install_capability
 │   ├── sync.ts         # manifest_sync, check_updates
-│   ├── observer.ts     # workflow observer
-│   └── suggester.ts    # proactive suggester
+│   ├── observer.ts     # observe_event/patterns/clear
+│   ├── suggester.ts    # suggest_capabilities
+│   ├── audit.ts        # manifest_audit
+│   ├── conflict.ts     # conflict_check/resolve
+│   ├── deps.ts         # deps_check/resolve
+│   └── web.ts          # web_interpret, web_fetch
 ├── adapters/           # Target agent installers
-│   ├── claude.ts
-│   ├── cursor.ts
-│   └── antigravity.ts
-├── parsers/            # Code parsers
-│   ├── skill.ts
-│   └── readme.ts
+│   ├── claude.ts       # .claude/skills/
+│   ├── cursor.ts       # .cursor/rules/
+│   └── antigravity.ts  # .agent/skills/
+├── parsers/
+│   ├── skill.ts        # YAML frontmatter
+│   ├── readme.ts       # README extraction
+│   └── mcp.ts          # Tree-sitter AST parsing
 └── data/
     └── default-repos.json
 ```
