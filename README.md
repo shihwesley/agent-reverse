@@ -1,5 +1,6 @@
 # 🧬 AgentReverse
 
+[![npm](https://img.shields.io/npm/v/@shihwesley/agent-reverse)](https://www.npmjs.com/package/@shihwesley/agent-reverse)
 [![MCP](https://img.shields.io/badge/MCP-Server-blue.svg)](https://modelcontextprotocol.io/)
 [![Protocol](https://img.shields.io/badge/Agent-Portable-green.svg)](#portability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -7,6 +8,29 @@
 > **"Stop the bloat. Maximize the context. Extract the DNA."**
 
 **AgentReverse** is a surgical integration engine designed to eliminate agent/plugin bloat. Instead of cloning entire repositories just for a single feature, AgentReverse reverse-engineers tools, skills, and plugins to extract only the essential logic—surgically implanting them into your current workflow.
+
+---
+
+## 📦 Installation
+
+### As MCP Server (Claude Code)
+
+```bash
+claude mcp add --transport stdio agent-reverse -- npx -y @shihwesley/agent-reverse-server
+```
+
+Then restart Claude Code. The 25 MCP tools are now available.
+
+### As CLI
+
+```bash
+# One-off usage (no install)
+npx @shihwesley/agent-reverse analyze https://github.com/some/repo
+
+# Global install
+npm install -g @shihwesley/agent-reverse
+agent-reverse --help
+```
 
 ---
 
