@@ -1,5 +1,5 @@
 {
-  "name": "agent-reverse",
+  "name": "@shihwesley/agent-reverse",
   "version": "0.1.0",
   "description": "Surgical integration tool - extract features from agent plugins without bloat",
   "type": "module",
@@ -8,6 +8,22 @@
     "agent-reverse": "dist/cli.js",
     "agent-reverse-server": "dist/server.js"
   },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shihwesley/agent-reverse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shihwesley/agent-reverse/issues"
+  },
+  "homepage": "https://github.com/shihwesley/agent-reverse#readme",
   "scripts": {
     "build": "tsc",
     "dev": "tsx watch src/server.ts",
@@ -19,9 +35,11 @@
     "model-context-protocol",
     "agent",
     "skills",
+    "claude",
+    "cursor",
     "reverse-engineering"
   ],
-  "author": "",
+  "author": "shihwesley",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
