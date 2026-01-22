@@ -21,9 +21,9 @@ describe('Integration: Observer → Suggester Flow', () => {
   it('should track workflow events and detect patterns', async () => {
     // Simulate repeated git operations
     const gitEvents = [
-      { type: 'tool_invocation', trigger: 'git_status', context: { command: 'git status' } },
-      { type: 'tool_invocation', trigger: 'git_add', context: { command: 'git add .' } },
-      { type: 'tool_invocation', trigger: 'git_commit', context: { command: 'git commit' } },
+      { type: 'tool_invocation' as const, trigger: 'git_status', context: { command: 'git status' } },
+      { type: 'tool_invocation' as const, trigger: 'git_add', context: { command: 'git add .' } },
+      { type: 'tool_invocation' as const, trigger: 'git_commit', context: { command: 'git commit' } },
     ];
 
     // Log events multiple times to build frequency
@@ -55,7 +55,7 @@ describe('Integration: Observer → Suggester Flow', () => {
   it('should clear cache', async () => {
     // Log events to create patterns
     for (let i = 0; i < 5; i++) {
-      await logEvent('/project', 'test', 'trigger1', {});
+      await logEvent('/project', 'manual_action', 'trigger1', {});
     }
 
     // Verify patterns exist

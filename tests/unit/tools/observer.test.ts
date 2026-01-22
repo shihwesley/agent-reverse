@@ -58,8 +58,8 @@ describe('Observer Tool', () => {
       const cache = {
         version: '1.0',
         patterns: [
-          { id: 'old', type: 'tool_invocation', trigger: 'old', frequency: 1, firstSeen: oldDate, lastSeen: oldDate, metadata: {} },
-          { id: 'new', type: 'tool_invocation', trigger: 'new', frequency: 1, firstSeen: recentDate, lastSeen: recentDate, metadata: {} },
+          { id: 'old', type: 'tool_invocation' as const, trigger: 'old', frequency: 1, firstSeen: oldDate, lastSeen: oldDate, metadata: {} },
+          { id: 'new', type: 'tool_invocation' as const, trigger: 'new', frequency: 1, firstSeen: recentDate, lastSeen: recentDate, metadata: {} },
         ],
         lastPruned: oldDate,
       };
