@@ -12,7 +12,7 @@ const USER_REPOS_FILE = 'known-repos.json';
 const MIN_FREQUENCY = 3;
 
 // Types
-interface Pattern {
+export interface Pattern {
   id: string;
   type: string;
   trigger: string;
@@ -20,12 +20,12 @@ interface Pattern {
   lastSeen: string;
 }
 
-interface WorkflowCache {
+export interface WorkflowCache {
   version: string;
   patterns: Pattern[];
 }
 
-interface KnownRepo {
+export interface KnownRepo {
   url: string;
   capabilities: string[];
   keywords: string[];
@@ -36,7 +36,7 @@ interface ReposRegistry {
   repos: KnownRepo[];
 }
 
-interface Suggestion {
+export interface Suggestion {
   type: 'friction' | 'overlap' | 'keyword_match';
   message: string;
   repo: string;
@@ -46,7 +46,7 @@ interface Suggestion {
 }
 
 // Load workflow cache (from observer)
-async function loadCache(workspaceRoot: string): Promise<WorkflowCache> {
+export async function loadCache(workspaceRoot: string): Promise<WorkflowCache> {
   try {
     const content = await readFile(join(workspaceRoot, CACHE_FILE), 'utf-8');
     return JSON.parse(content);
@@ -69,7 +69,7 @@ async function loadDefaultRepos(): Promise<KnownRepo[]> {
 }
 
 // Load user repos
-async function loadUserRepos(workspaceRoot: string): Promise<KnownRepo[]> {
+export async function loadUserRepos(workspaceRoot: string): Promise<KnownRepo[]> {
   try {
     const content = await readFile(join(workspaceRoot, USER_REPOS_FILE), 'utf-8');
     const registry = JSON.parse(content) as ReposRegistry;
@@ -80,7 +80,7 @@ async function loadUserRepos(workspaceRoot: string): Promise<KnownRepo[]> {
 }
 
 // Save user repos
-async function saveUserRepos(workspaceRoot: string, repos: KnownRepo[]): Promise<void> {
+export async function saveUserRepos(workspaceRoot: string, repos: KnownRepo[]): Promise<void> {
   const registry: ReposRegistry = { version: '1.0', repos };
   await writeFile(
     join(workspaceRoot, USER_REPOS_FILE),
@@ -90,7 +90,7 @@ async function saveUserRepos(workspaceRoot: string, repos: KnownRepo[]): Promise
 }
 
 // Get all known repos (defaults + user)
-async function getAllRepos(workspaceRoot: string): Promise<KnownRepo[]> {
+export async function getAllRepos(workspaceRoot: string): Promise<KnownRepo[]> {
   const defaults = await loadDefaultRepos();
   const user = await loadUserRepos(workspaceRoot);
 
@@ -102,7 +102,7 @@ async function getAllRepos(workspaceRoot: string): Promise<KnownRepo[]> {
 }
 
 // Generate suggestions from patterns
-async function generateSuggestions(workspaceRoot: string): Promise<Suggestion[]> {
+export async function generateSuggestions(workspaceRoot: string): Promise<Suggestion[]> {
   const cache = await loadCache(workspaceRoot);
   const repos = await getAllRepos(workspaceRoot);
   const suggestions: Suggestion[] = [];
