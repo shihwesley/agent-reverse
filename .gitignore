@@ -11,3 +11,8 @@ workflow-cache.json
 
 # Git worktrees
 .worktrees/
+
+# Local docs/logs
+docs/SIMPLIFICATION_LOG.md
+docs/plans/
+SIMPLIFICATION_LOG.md
