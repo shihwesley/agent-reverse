@@ -73,14 +73,8 @@ function parseArgs(args: string[]): { command: string; positional: string[]; opt
   return { command, positional, options };
 }
 
-function output(data: unknown, json: boolean): void {
-  if (json) {
-    console.log(JSON.stringify(data, null, 2));
-  } else if (typeof data === 'string') {
-    console.log(data);
-  } else {
-    console.log(JSON.stringify(data, null, 2));
-  }
+function output(data: unknown): void {
+  console.log(JSON.stringify(data, null, 2));
 }
 
 // Store last analyzed repo for install command
@@ -99,7 +93,7 @@ async function cmdAnalyze(url: string, options: CliOptions): Promise<void> {
   lastAnalysis = { url, path: fetchResult.path, commit: fetchResult.commit };
 
   if (options.json) {
-    output(analysis, true);
+    output(analysis);
   } else {
     console.log(`\nFound ${analysis.skills.length} skills, ${analysis.tools.length} tools\n`);
 
@@ -151,7 +145,7 @@ async function cmdInstall(id: string, options: CliOptions): Promise<void> {
   });
 
   if (options.json) {
-    output(result, true);
+    output(result);
   } else {
     if (result.success) {
       console.log(`\nInstalled ${id}`);
@@ -170,7 +164,7 @@ async function cmdSync(options: CliOptions): Promise<void> {
   const result = await manifestSync(options.workspace, options.target);
 
   if (options.json) {
-    output(result, true);
+    output(result);
   } else {
     console.log(`\nSync complete`);
     console.log(`  Installed: ${result.installed.length}`);
@@ -192,7 +186,7 @@ async function cmdCheckUpdates(options: CliOptions): Promise<void> {
   const result = await manifestCheckUpdates(options.workspace);
 
   if (options.json) {
-    output(result, true);
+    output(result);
   } else {
     if (result.outdated.length === 0) {
       console.log('\nAll capabilities up to date');
@@ -218,7 +212,7 @@ async function cmdAudit(options: CliOptions): Promise<void> {
   const capabilities = await listCapabilities(options.workspace);
 
   if (options.json) {
-    output({ capabilities, untracked: [], duplicates: [] }, true);
+    output({ capabilities, untracked: [], duplicates: [] });
   } else {
     console.log(`\n${capabilities.length} capabilities in manifest`);
 
@@ -234,7 +228,7 @@ async function cmdList(options: CliOptions): Promise<void> {
   const capabilities = await listCapabilities(options.workspace);
 
   if (options.json) {
-    output(capabilities, true);
+    output(capabilities);
   } else {
     if (capabilities.length === 0) {
       console.log('No capabilities installed');
