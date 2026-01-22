@@ -33,9 +33,9 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "test:unit": "vitest run --testPathPattern='unit'",
-    "test:integration": "vitest run --testPathPattern='integration'",
-    "test:e2e": "vitest run --testPathPattern='e2e'"
+    "test:unit": "vitest run tests/unit",
+    "test:integration": "vitest run tests/integration",
+    "test:e2e": "vitest run tests/e2e"
   },
   "keywords": [
     "mcp",
