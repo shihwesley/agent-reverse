@@ -16,7 +16,12 @@
 ### As MCP Server (Claude Code)
 
 ```bash
-claude mcp add --transport stdio agent-reverse -- npx -y @shihwesley/agent-reverse-server
+# Option 1: npx (recommended - no install needed)
+claude mcp add --transport stdio agent-reverse -- npx -y -p @shihwesley/agent-reverse agent-reverse-server
+
+# Option 2: Global install first
+npm install -g @shihwesley/agent-reverse
+claude mcp add --transport stdio agent-reverse -- agent-reverse-server
 ```
 
 Then restart Claude Code. The 25 MCP tools are now available.
@@ -25,11 +30,27 @@ Then restart Claude Code. The 25 MCP tools are now available.
 
 ```bash
 # One-off usage (no install)
-npx @shihwesley/agent-reverse analyze https://github.com/some/repo
+npx -y -p @shihwesley/agent-reverse agent-reverse analyze https://github.com/some/repo
 
 # Global install
 npm install -g @shihwesley/agent-reverse
+agent-reverse analyze https://github.com/some/repo
 agent-reverse --help
+```
+
+### From Source (Development)
+
+```bash
+git clone https://github.com/shihwesley/agent-reverse.git
+cd agent-reverse
+npm install
+npm run build
+
+# Run MCP server locally
+claude mcp add --transport stdio agent-reverse -- node dist/server.js
+
+# Run CLI locally
+node dist/cli.js --help
 ```
 
 ---
