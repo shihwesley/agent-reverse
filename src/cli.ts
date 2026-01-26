@@ -8,6 +8,9 @@ import { installCapability } from './tools/install.js';
 import { manifestSync } from './tools/sync.js';
 import { manifestCheckUpdates } from './tools/sync.js';
 import { loadManifest, listCapabilities } from './tools/manifest.js';
+import { mkdir, writeFile, readFile } from 'fs/promises';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import type { TargetAgent } from './types.js';
 
 const HELP = `
@@ -16,6 +19,7 @@ AgentReverse CLI - Extract capabilities from GitHub repos
 Usage: agent-reverse <command> [options]
 
 Commands:
+  setup              Install AgentReverse skills to current workspace
   analyze <url>      Analyze a GitHub repo for capabilities
   install <id>       Install a capability (after analyze)
   sync               Reinstall all capabilities from manifest
@@ -30,6 +34,7 @@ Options:
   --help, -h         Show this help
 
 Examples:
+  agent-reverse setup                               # Install skills to .claude/commands/
   agent-reverse analyze https://github.com/user/repo
   agent-reverse install my-skill --target cursor
   agent-reverse sync --workspace /path/to/project
@@ -244,6 +249,49 @@ async function cmdList(options: CliOptions): Promise<void> {
   }
 }
 
+async function cmdSetup(options: CliOptions): Promise<void> {
+  const commandsDir = join(options.workspace, '.claude', 'commands');
+  await mkdir(commandsDir, { recursive: true });
+
+  // Get path to bundled skills (relative to dist/cli.js)
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const skillsDir = join(__dirname, '..', 'skills');
+
+  const skills = [
+    { src: 'agent-reverse.md', dest: 'agent-reverse.md' },
+    { src: 'agent-reverse-update/SKILL.md', dest: 'agent-reverse-update.md' },
+  ];
+
+  let installed = 0;
+  for (const skill of skills) {
+    try {
+      const content = await readFile(join(skillsDir, skill.src), 'utf-8');
+      await writeFile(join(commandsDir, skill.dest), content, 'utf-8');
+      console.log(`  ✓ Installed ${skill.dest}`);
+      installed++;
+    } catch (err) {
+      console.error(`  ✗ Failed to install ${skill.dest}: ${err}`);
+    }
+  }
+
+  if (options.json) {
+    output({ installed, commandsDir });
+  } else {
+    console.log(`\n${installed} skills installed to ${commandsDir}`);
+    console.log(`
+Next: Add the MCP server to Claude Code:
+
+  claude mcp add agent-reverse -- npx -y @shihwesley/agent-reverse agent-reverse-server
+
+Then restart Claude Code. You'll have access to:
+  - /agent-reverse analyze <url>  - Extract skills from repos
+  - /agent-reverse-update         - Check for skill updates
+  - 25 MCP tools for surgical extraction
+`);
+  }
+}
+
 function detectTargetAgent(workspace: string): TargetAgent {
   const fs = require('fs');
   const path = require('path');
@@ -267,6 +315,10 @@ async function main(): Promise<void> {
 
   try {
     switch (command) {
+      case 'setup':
+        await cmdSetup(options);
+        break;
+
       case 'analyze':
         if (!positional[0]) {
           console.error('Error: URL required');

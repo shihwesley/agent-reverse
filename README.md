@@ -13,28 +13,29 @@
 
 ## 📦 Installation
 
-### As MCP Server (Claude Code)
+### Quick Start (Claude Code)
 
 ```bash
-# Option 1: npx (recommended - no install needed)
-claude mcp add --transport stdio agent-reverse -- npx -y -p @shihwesley/agent-reverse agent-reverse-server
+# Step 1: Add MCP server
+claude mcp add agent-reverse -- npx -y @shihwesley/agent-reverse agent-reverse-server
 
-# Option 2: Global install first
-npm install -g @shihwesley/agent-reverse
-claude mcp add --transport stdio agent-reverse -- agent-reverse-server
+# Step 2: Install slash commands (run from your project directory)
+npx -y @shihwesley/agent-reverse setup
 ```
 
-Then restart Claude Code. The 25 MCP tools are now available.
+Restart Claude Code. You now have:
+- **25 MCP tools** for surgical extraction
+- **/agent-reverse** - Analyze and install skills from GitHub repos
+- **/agent-reverse-update** - Check for skill updates on session start
 
-### As CLI
+### Global Install (Optional)
 
 ```bash
-# One-off usage (no install)
-npx -y -p @shihwesley/agent-reverse agent-reverse analyze https://github.com/some/repo
-
-# Global install
 npm install -g @shihwesley/agent-reverse
-agent-reverse analyze https://github.com/some/repo
+
+# Then use without npx:
+claude mcp add agent-reverse -- agent-reverse-server
+agent-reverse setup
 agent-reverse --help
 ```
 
@@ -47,9 +48,10 @@ npm install
 npm run build
 
 # Run MCP server locally
-claude mcp add --transport stdio agent-reverse -- node dist/server.js
+claude mcp add agent-reverse -- node dist/server.js
 
 # Run CLI locally
+node dist/cli.js setup
 node dist/cli.js --help
 ```
 
