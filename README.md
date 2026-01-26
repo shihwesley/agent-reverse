@@ -24,7 +24,7 @@ npx -y @shihwesley/agent-reverse setup
 ```
 
 Restart Claude Code. You now have:
-- **25 MCP tools** for surgical extraction
+- **26 MCP tools** for surgical extraction
 - **/agent-reverse** - Analyze and install skills from GitHub repos
 - **/agent-reverse-update** - Check for skill updates on session start
 
@@ -142,6 +142,85 @@ Supported target systems:
 ```
 
 *Result: Re-plants all your capabilities into a fresh environment.*
+
+---
+
+## 💾 Backup & Restore
+
+Export your entire AgentReverse setup for portability across machines or agent platforms.
+
+### What Gets Backed Up
+
+| Item | Path | Description |
+|------|------|-------------|
+| Manifest | `agent-reverse.json` | Installed capabilities list |
+| Skills | `.claude/skills/*.md` | Claude Code skills |
+| Commands | `.claude/commands/*.md` | User-invocable commands |
+| Rules | `.cursor/rules/*.mdc` | Cursor rules |
+| CLAUDE.md | `CLAUDE.md` | Project instructions |
+| Caches | `workflow-cache.json`, `known-repos.json` | Observer patterns & watched repos |
+
+### Create a Backup
+
+```bash
+# Backup to local file (default: agent-reverse-backup-<date>.json)
+agent-reverse backup
+
+# Backup with custom filename
+agent-reverse backup --output my-backup.json
+
+# Backup to GitHub Gist (private)
+agent-reverse backup --gist
+
+# Backup to public Gist
+agent-reverse backup --gist --gist-public
+
+# Backup to GitHub repo
+agent-reverse backup --repo myuser/agent-backups
+```
+
+### Restore from Backup
+
+```bash
+# Restore from local file
+agent-reverse restore backup.json
+
+# Restore from Gist URL
+agent-reverse restore https://gist.github.com/user/abc123
+
+# Restore from GitHub repo
+agent-reverse restore https://github.com/user/backups/blob/main/backups/2026-01-26.json
+```
+
+### Cross-Agent Restore
+
+Migrate your setup between different agent platforms:
+
+```bash
+# Restore Claude skills to Cursor
+agent-reverse restore backup.json --target cursor
+
+# Preview what would be restored (dry run)
+agent-reverse restore backup.json --target cursor --dry-run
+```
+
+*Result: Skills from `.claude/skills/foo.md` become `.cursor/rules/foo.mdc`*
+
+### Restore Options
+
+| Flag | Description |
+|------|-------------|
+| `--target <agent>` | Convert to different agent: `claude-code`, `cursor`, `antigravity` |
+| `--merge` | Merge with existing setup instead of replacing |
+| `--force` | Overwrite existing files |
+| `--dry-run` | Preview changes without writing |
+
+### MCP Tools
+
+For programmatic access:
+- `backup_create` - Create backup archive
+- `backup_restore` - Restore from backup
+- `backup_list` - List backup contents without restoring
 
 ---
 
