@@ -13,7 +13,14 @@ export interface InstallResult {
 }
 
 const SKILLS_DIR = '.claude/skills';
+const COMMANDS_DIR = '.claude/commands';
 const CONFIG_FILE = 'CLAUDE.md';
+
+function getTargetDir(skill: ParsedSkill): string {
+  return skill.frontmatter['user-invocable'] === true
+    ? COMMANDS_DIR
+    : SKILLS_DIR;
+}
 
 export async function installForClaudeCode(
   skill: ParsedSkill,
@@ -28,20 +35,21 @@ export async function installForClaudeCode(
   };
 
   try {
-    // Ensure skills directory exists
-    const skillsPath = join(workspaceRoot, SKILLS_DIR);
-    await mkdir(skillsPath, { recursive: true });
+    // Determine target directory based on user-invocable frontmatter
+    const targetDir = getTargetDir(skill);
+    const targetDirPath = join(workspaceRoot, targetDir);
+    await mkdir(targetDirPath, { recursive: true });
 
     // Determine target filename
     const targetFileName = `${capabilityId}.md`;
-    const targetPath = join(skillsPath, targetFileName);
+    const targetPath = join(targetDirPath, targetFileName);
 
     // Build skill content with frontmatter
     const skillContent = buildSkillContent(skill, capabilityId);
 
     // Write skill file
     await writeFile(targetPath, skillContent, 'utf-8');
-    result.filesWritten.push(join(SKILLS_DIR, targetFileName));
+    result.filesWritten.push(join(targetDir, targetFileName));
 
     // Update CLAUDE.md with usage hint
     const configUpdated = await updateClaudeMd(workspaceRoot, skill, capabilityId);
@@ -137,13 +145,15 @@ async function updateClaudeMd(
 export async function copyFileToSkills(
   sourcePath: string,
   workspaceRoot: string,
-  targetName: string
+  targetName: string,
+  userInvocable?: boolean
 ): Promise<string> {
-  const skillsPath = join(workspaceRoot, SKILLS_DIR);
-  await mkdir(skillsPath, { recursive: true });
+  const targetDir = userInvocable ? COMMANDS_DIR : SKILLS_DIR;
+  const targetDirPath = join(workspaceRoot, targetDir);
+  await mkdir(targetDirPath, { recursive: true });
 
-  const targetPath = join(skillsPath, targetName);
+  const targetPath = join(targetDirPath, targetName);
   await copyFile(sourcePath, targetPath);
 
-  return join(SKILLS_DIR, targetName);
+  return join(targetDir, targetName);
 }

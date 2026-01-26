@@ -100,6 +100,7 @@ export async function installCapability(options: InstallOptions): Promise<Instal
     }
 
     // Update manifest
+    const userInvocable = skill.frontmatter['user-invocable'] === true;
     const manifestResult = await addCapability(options.workspaceRoot, {
       id: options.capabilityId,
       source: options.sourceUrl,
@@ -109,6 +110,7 @@ export async function installCapability(options: InstallOptions): Promise<Instal
       dependencies: [],
       status: 'installed',
       installedAt: new Date().toISOString(),
+      userInvocable,
     });
 
     result.manifestUpdated = manifestResult.success;
