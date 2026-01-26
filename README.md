@@ -28,6 +28,13 @@ Restart Claude Code. You now have:
 - **/agent-reverse** - Analyze and install skills from GitHub repos
 - **/agent-reverse-update** - Check for skill updates on session start
 
+### Upgrading
+
+```bash
+# Re-run setup to get latest skills (MCP auto-updates via npx)
+npx -y @shihwesley/agent-reverse@latest setup
+```
+
 ### Global Install (Optional)
 
 ```bash
