@@ -46,7 +46,7 @@ This ensures:
 - Phase 4: Advanced (conflict resolution, audit, deep-parser, deps)
 - Phase 5: Web Synthesis (web_interpret, web_fetch)
 
-**25 MCP tools registered.** See [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md) for full architecture.
+**26 MCP tools registered.** See [docs/CODEBASE_MAP.md](docs/CODEBASE_MAP.md) for full architecture.
 
 ## Architecture
 
@@ -55,7 +55,7 @@ src/
 ├── server.ts           # MCP server entry
 ├── cli.ts              # CLI entry
 ├── types.ts            # Shared types
-├── tools/              # MCP tools (11 files, 25 tools)
+├── tools/              # MCP tools (12 files, 26 tools)
 │   ├── fetch.ts        # repo_fetch, repo_cleanup
 │   ├── analyze.ts      # repo_analyze
 │   ├── manifest.ts     # manifest_* tools
@@ -66,7 +66,8 @@ src/
 │   ├── audit.ts        # manifest_audit
 │   ├── conflict.ts     # conflict_check/resolve
 │   ├── deps.ts         # deps_check/resolve
-│   └── web.ts          # web_interpret, web_fetch
+│   ├── web.ts          # web_interpret, web_fetch
+│   └── backup.ts       # backup_create/restore/list
 ├── adapters/           # Target agent installers
 │   ├── claude.ts       # .claude/skills/
 │   ├── cursor.ts       # .cursor/rules/

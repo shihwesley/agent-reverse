@@ -8,6 +8,7 @@ import { installCapability } from './tools/install.js';
 import { manifestSync } from './tools/sync.js';
 import { manifestCheckUpdates } from './tools/sync.js';
 import { loadManifest, listCapabilities } from './tools/manifest.js';
+import { createBackup, restoreBackup } from './tools/backup.js';
 import { mkdir, writeFile, readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -26,11 +27,20 @@ Commands:
   check-updates      Check for updates to installed capabilities
   audit              Check for bloat and duplicates
   list               List installed capabilities
+  backup             Create backup of all configs and skills
+  restore <source>   Restore from backup file, gist, or URL
 
 Options:
   --json             Output JSON instead of human-readable
   --workspace <dir>  Workspace root (default: cwd)
   --target <agent>   Target agent: claude-code, cursor, antigravity
+  --output <file>    Output path for backup
+  --gist             Upload backup to GitHub Gist
+  --gist-public      Make gist public (default: private)
+  --repo <owner/repo> Push backup to GitHub repo
+  --merge            Merge with existing (for restore)
+  --force            Overwrite existing files
+  --dry-run          Preview restore without writing
   --help, -h         Show this help
 
 Examples:
@@ -38,12 +48,21 @@ Examples:
   agent-reverse analyze https://github.com/user/repo
   agent-reverse install my-skill --target cursor
   agent-reverse sync --workspace /path/to/project
+  agent-reverse backup --gist                       # Backup to private gist
+  agent-reverse restore backup.json --target cursor # Cross-agent restore
 `;
 
 interface CliOptions {
   json: boolean;
   workspace: string;
   target?: TargetAgent;
+  output?: string;
+  gist?: boolean;
+  gistPublic?: boolean;
+  repo?: string;
+  merge?: boolean;
+  force?: boolean;
+  dryRun?: boolean;
 }
 
 function parseArgs(args: string[]): { command: string; positional: string[]; options: CliOptions } {
@@ -63,6 +82,21 @@ function parseArgs(args: string[]): { command: string; positional: string[]; opt
       options.workspace = args[++i];
     } else if (arg === '--target' && args[i + 1]) {
       options.target = args[++i] as TargetAgent;
+    } else if (arg === '--output' && args[i + 1]) {
+      options.output = args[++i];
+    } else if (arg === '--gist') {
+      options.gist = true;
+    } else if (arg === '--gist-public') {
+      options.gistPublic = true;
+      options.gist = true;
+    } else if (arg === '--repo' && args[i + 1]) {
+      options.repo = args[++i];
+    } else if (arg === '--merge') {
+      options.merge = true;
+    } else if (arg === '--force') {
+      options.force = true;
+    } else if (arg === '--dry-run') {
+      options.dryRun = true;
     } else if (arg === '--help' || arg === '-h') {
       console.log(HELP);
       process.exit(0);
@@ -292,6 +326,59 @@ Then restart Claude Code. You'll have access to:
   }
 }
 
+async function cmdBackup(options: CliOptions): Promise<void> {
+  const result = await createBackup(options.workspace, {
+    outputPath: options.output,
+    gist: options.gist,
+    gistPublic: options.gistPublic,
+    repo: options.repo,
+  });
+
+  if (options.json) {
+    output(result);
+  } else {
+    if (result.success) {
+      console.log(`Backup created: ${result.fileCount} files`);
+      if (result.backupPath) console.log(`  File: ${result.backupPath}`);
+      if (result.gistUrl) console.log(`  Gist: ${result.gistUrl}`);
+      if (result.repoUrl) console.log(`  Repo: ${result.repoUrl}`);
+    } else {
+      console.error('Backup failed:');
+      result.errors.forEach(e => console.error(`  - ${e}`));
+    }
+  }
+}
+
+async function cmdRestore(source: string, options: CliOptions): Promise<void> {
+  const result = await restoreBackup(options.workspace, source, {
+    targetAgent: options.target,
+    merge: options.merge,
+    force: options.force,
+    dryRun: options.dryRun,
+  });
+
+  if (options.json) {
+    output(result);
+  } else {
+    if (options.dryRun) {
+      console.log('Dry run - would restore:');
+      result.filesRestored.forEach(f => console.log(`  + ${f}`));
+      if (result.converted) console.log(`  (cross-agent conversion: ${options.target})`);
+    } else if (result.success) {
+      console.log(`Restored ${result.filesRestored.length} files`);
+      if (result.filesSkipped.length > 0) {
+        console.log(`Skipped ${result.filesSkipped.length} existing files (use --force to overwrite)`);
+      }
+      if (result.converted) {
+        console.log(`Converted from different agent to ${options.target}`);
+      }
+    } else {
+      console.error('Restore failed:');
+      result.errors.forEach(e => console.error(`  - ${e}`));
+    }
+  }
+}
+
 function detectTargetAgent(workspace: string): TargetAgent {
   const fs = require('fs');
   const path = require('path');
@@ -349,6 +436,18 @@ async function main(): Promise<void> {
 
       case 'list':
         await cmdList(options);
+        break;
+
+      case 'backup':
+        await cmdBackup(options);
+        break;
+
+      case 'restore':
+        if (!positional[0]) {
+          console.error('Error: Backup source required');
+          process.exit(1);
+        }
+        await cmdRestore(positional[0], options);
         break;
 
       default:

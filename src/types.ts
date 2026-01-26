@@ -167,3 +167,40 @@ export interface WebInterpretResult {
   skillPath?: string;
   error?: string;
 }
+
+// Backup types
+
+export interface BackupFile {
+  relativePath: string;      // e.g., ".claude/skills/foo.md"
+  content: string;           // File contents
+  type: 'skill' | 'command' | 'rule' | 'config';
+}
+
+export interface BackupManifest {
+  version: string;           // AgentReverse version
+  createdAt: string;         // ISO timestamp
+  sourceAgent: TargetAgent;  // Where this came from
+  manifest: Manifest;        // agent-reverse.json content
+  files: BackupFile[];       // All skill/config files
+  claudeMd?: string;         // CLAUDE.md content
+  observerCache?: object;    // workflow-cache.json
+  knownRepos?: string[];     // known-repos.json
+}
+
+export interface BackupResult {
+  success: boolean;
+  backupPath?: string;
+  gistUrl?: string;
+  repoUrl?: string;
+  fileCount: number;
+  timestamp: string;
+  errors: string[];
+}
+
+export interface RestoreResult {
+  success: boolean;
+  filesRestored: string[];
+  filesSkipped: string[];
+  converted: boolean;        // true if cross-agent restore
+  errors: string[];
+}
