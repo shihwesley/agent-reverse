@@ -90,6 +90,61 @@ User: /agent-reverse check-updates
 You: 2 outdated: code-review (a1b2c3d → f4e5d6c), test-runner (1234567 → 89abcde). Update?
 ```
 
+### `/agent-reverse backup [options]`
+Create a backup of all capabilities, skills, and configs.
+
+**Steps:**
+1. Call `backup_create` tool with options:
+   - No options: saves to `agent-reverse-backup-<date>.json`
+   - `--gist`: upload to GitHub Gist (private by default)
+   - `--gist --public`: upload as public gist
+   - `--repo owner/name`: push to GitHub repo
+2. Report backup location and file count
+
+**Example:**
+```
+User: /agent-reverse backup
+You: Backup created: agent-reverse-backup-2026-01-31.json (11 capabilities, 16 files)
+
+User: /agent-reverse backup --gist
+You: Backup uploaded to gist: https://gist.github.com/user/abc123
+```
+
+### `/agent-reverse restore <source>`
+Restore capabilities from a backup.
+
+**Steps:**
+1. Call `backup_list` to preview contents
+2. Show what will be restored
+3. Call `backup_restore` with options:
+   - `source`: local path, gist URL, or repo URL
+   - `--merge`: merge with existing (default: replace)
+   - `--dry-run`: preview without writing
+   - `--target <agent>`: cross-agent restore (claude-code, cursor, antigravity)
+4. Report restored files
+
+**Example:**
+```
+User: /agent-reverse restore ./agent-reverse-backup.json
+You: Restored 11 capabilities, 16 files.
+
+User: /agent-reverse restore https://gist.github.com/user/abc123 --target cursor
+You: Cross-agent restore: claude-code → cursor. Restored 8 capabilities.
+```
+
+### `/agent-reverse backup-list <source>`
+Preview backup contents without restoring.
+
+**Steps:**
+1. Call `backup_list` with the source path/URL
+2. Display capability list and file count
+
+**Example:**
+```
+User: /agent-reverse backup-list ./backup.json
+You: Backup contains: 11 capabilities, 16 files. Created: 2026-01-31.
+```
+
 ## Target Agent Detection
 
 Detect the current agent system:
