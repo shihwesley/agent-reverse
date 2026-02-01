@@ -1,6 +1,6 @@
 {
   "name": "@shihwesley/agent-reverse",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Surgical integration tool - extract features from agent plugins without bloat",
   "type": "module",
   "main": "dist/server.js",
