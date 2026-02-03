@@ -21,6 +21,7 @@ export interface InstallOptions {
   targetAgent: TargetAgent; // Target agent system
   workspaceRoot: string;    // Where to install
   scope?: InstallScope;     // For Antigravity: 'project' or 'global'
+  userInvocable?: boolean;  // Override: force install as command (true) or skill (false)
 }
 
 export interface InstallResultFull {
@@ -29,6 +30,7 @@ export interface InstallResultFull {
   filesWritten: string[];
   configUpdated: boolean;
   manifestUpdated: boolean;
+  userInvocable: boolean;
   errors: string[];
 }
 
@@ -39,6 +41,7 @@ export async function installCapability(options: InstallOptions): Promise<Instal
     filesWritten: [],
     configUpdated: false,
     manifestUpdated: false,
+    userInvocable: false,
     errors: [],
   };
 
@@ -52,6 +55,13 @@ export async function installCapability(options: InstallOptions): Promise<Instal
       result.errors.push(`Failed to parse skill file: ${options.skillPath}`);
       return result;
     }
+
+    // Apply userInvocable override if provided
+    if (options.userInvocable !== undefined) {
+      skill.frontmatter['user-invocable'] = options.userInvocable;
+    }
+
+    result.userInvocable = skill.frontmatter['user-invocable'] === true;
 
     // Install based on target agent
     let installResult;
@@ -146,9 +156,12 @@ export function registerInstallTool(server: McpServer): void {
         scope: z.enum(['project', 'global'])
           .optional()
           .describe('Install scope for Antigravity: project-local or user-global'),
+        userInvocable: z.boolean()
+          .optional()
+          .describe('Override: true installs to commands/ (slash command), false to skills/ (agent-only). If omitted, uses source frontmatter.'),
       },
     },
-    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope }) => {
+    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope, userInvocable }) => {
       const result = await installCapability({
         skillPath,
         sourceRepoPath,
@@ -158,6 +171,7 @@ export function registerInstallTool(server: McpServer): void {
         targetAgent: targetAgent as TargetAgent,
         workspaceRoot: workspaceRoot || process.cwd(),
         scope: scope as InstallScope | undefined,
+        userInvocable,
       });
 
       return {

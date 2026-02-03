@@ -156,6 +156,7 @@ export function registerAnalyzeTool(server: McpServer): void {
                   name: s.name,
                   description: s.description,
                   path: s.filePath,
+                  userInvocable: s.frontmatter['user-invocable'] === true,
                 })),
                 toolCount: analysis.tools.length,
                 tools: analysis.tools,

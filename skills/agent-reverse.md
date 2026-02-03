@@ -16,13 +16,18 @@ Analyze a GitHub repo for extractable capabilities.
 1. Call `repo_fetch` with the URL to clone the repo
 2. Call `repo_analyze` with the cloned path to get Bill of Materials
 3. Present the capabilities found (skills, tools, plugins)
+   - For each capability, indicate if it has `user-invocable: true` (slash command) or not (agent-only skill)
 4. Ask user which capabilities to install
 5. Call `repo_cleanup` when done
 
 **Example:**
 ```
 User: /agent-reverse analyze https://github.com/anthropics/claude-code-plugins
-You: Analyzing repo... Found 5 skills, 2 MCP tools. Which would you like to install?
+You: Analyzing repo... Found 5 capabilities, 2 MCP tools:
+  1. code-review — Review PRs [/command ✓]
+  2. test-runner — Run tests [/command ✓]
+  3. helper-utils — Internal utilities [agent-only]
+Which would you like to install?
 ```
 
 ### `/agent-reverse install <id>`
@@ -30,20 +35,42 @@ Install a capability from a previously analyzed repo.
 
 **Steps:**
 1. Verify the repo is still cloned (or re-fetch if needed)
-2. Call `install_capability` with:
+2. **Determine user-invocable status** before installing:
+   - Check if the source skill has `user-invocable: true` in frontmatter
+   - If it does → proceed with `userInvocable: true`
+   - If it does NOT → **ask the user**: "This capability doesn't have a slash command configured. Would you like to install it as a `/command` (user-invocable) or as an agent-only skill?"
+   - Pass the user's choice as the `userInvocable` parameter to `install_capability`
+3. Call `install_capability` with:
    - `skillPath`: path to the skill file in repo
    - `sourceRepoPath`: cloned repo path
    - `sourceUrl`: GitHub URL
    - `commit`: pinned commit hash
    - `capabilityId`: the ID user specified
    - `targetAgent`: detect from current environment (claude-code, cursor, antigravity)
-3. Report success/failure and files written
+   - `userInvocable`: true (→ `.claude/commands/`) or false (→ `.claude/skills/`)
+4. Report success/failure, files written, and whether `/capabilityId` is available as a slash command
 
-**Example:**
+**Example (user-invocable in source):**
 ```
 User: /agent-reverse install code-review
-You: Installing code-review... Written to .claude/skills/code-review.md. Added to manifest.
+You: Installing code-review... Written to .claude/commands/code-review.md. Available as /code-review. Added to manifest.
 ```
+
+**Example (not user-invocable, asks user):**
+```
+User: /agent-reverse install helper-utils
+You: This capability doesn't define a slash command. Install as:
+  1. /helper-utils slash command (user-invocable)
+  2. Agent-only skill (no slash command)
+User: 1
+You: Installing helper-utils... Written to .claude/commands/helper-utils.md. Available as /helper-utils. Added to manifest.
+```
+
+**Skills vs Commands routing:**
+- `userInvocable: true` → `.claude/commands/` (registers as `/slash` command)
+- `userInvocable: false` or omitted → `.claude/skills/` (agent-only, no slash command)
+- The `install_capability` tool accepts an optional `userInvocable` override that takes precedence over the source frontmatter
+- Always tell the user which directory it went to and whether `/command` is available
 
 ### `/agent-reverse sync`
 Reinstall all capabilities from the manifest.
