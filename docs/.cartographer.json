@@ -1,0 +1,1161 @@
+{
+  "root": "/Users/quartershots/Source/agent-reverse",
+  "files": [
+    {
+      "path": ".claude/docs/mcp/architecture.md",
+      "tokens": 443,
+      "size_bytes": 1755,
+      "hash": "391ed8ec8ab6"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "tokens": 88,
+      "size_bytes": 296,
+      "hash": "504754377116"
+    },
+    {
+      "path": ".github/workflows/publish.yml",
+      "tokens": 165,
+      "size_bytes": 631,
+      "hash": "e9339f19a570"
+    },
+    {
+      "path": ".github/workflows/test.yml",
+      "tokens": 263,
+      "size_bytes": 995,
+      "hash": "0d0d08ddbbd8"
+    },
+    {
+      "path": "docs/.cartographer.json",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "docs/BRANCHES.md",
+      "tokens": 659,
+      "size_bytes": 2590,
+      "hash": "aa35b7807498"
+    },
+    {
+      "path": "docs/CODEBASE_MAP.md",
+      "tokens": 3789,
+      "size_bytes": 14683,
+      "hash": "e5dbc3c44920"
+    },
+    {
+      "path": "docs/PRD.md",
+      "tokens": 1233,
+      "size_bytes": 5858,
+      "hash": "3c24d904f1f4"
+    },
+    {
+      "path": "docs/spec.md",
+      "tokens": 2015,
+      "size_bytes": 8108,
+      "hash": "0227d4658951"
+    },
+    {
+      "path": "docs/test_case.md",
+      "tokens": 1021,
+      "size_bytes": 4252,
+      "hash": "5f94721b715f"
+    },
+    {
+      "path": "skills/agent-reverse-update/SKILL.md",
+      "tokens": 308,
+      "size_bytes": 1308,
+      "hash": "4c3e7a438993"
+    },
+    {
+      "path": "skills/agent-reverse.md",
+      "tokens": 1673,
+      "size_bytes": 6565,
+      "hash": "97b0e85414a1"
+    },
+    {
+      "path": "src/adapters/antigravity.ts",
+      "tokens": 526,
+      "size_bytes": 2151,
+      "hash": "72acbb882bfb"
+    },
+    {
+      "path": "src/adapters/claude.ts",
+      "tokens": 1100,
+      "size_bytes": 4655,
+      "hash": "b07e1979bb2c"
+    },
+    {
+      "path": "src/adapters/cursor.ts",
+      "tokens": 518,
+      "size_bytes": 2161,
+      "hash": "a8d2d744aead"
+    },
+    {
+      "path": "src/data/default-repos.json",
+      "tokens": 180,
+      "size_bytes": 646,
+      "hash": "6b7f29e3e703"
+    },
+    {
+      "path": "src/parsers/mcp.ts",
+      "tokens": 1941,
+      "size_bytes": 8014,
+      "hash": "c136b03363a1"
+    },
+    {
+      "path": "src/parsers/readme.ts",
+      "tokens": 1050,
+      "size_bytes": 4074,
+      "hash": "f69033e51513"
+    },
+    {
+      "path": "src/parsers/skill.ts",
+      "tokens": 476,
+      "size_bytes": 1966,
+      "hash": "60720dccaf5d"
+    },
+    {
+      "path": "src/tools/analyze.ts",
+      "tokens": 1235,
+      "size_bytes": 5377,
+      "hash": "4dcdfb929421"
+    },
+    {
+      "path": "src/tools/audit.ts",
+      "tokens": 2147,
+      "size_bytes": 8978,
+      "hash": "eb3b70743e33"
+    },
+    {
+      "path": "src/tools/backup.ts",
+      "tokens": 3905,
+      "size_bytes": 16203,
+      "hash": "a72ebeff66a8"
+    },
+    {
+      "path": "src/tools/conflict.ts",
+      "tokens": 1849,
+      "size_bytes": 8647,
+      "hash": "915f30254042"
+    },
+    {
+      "path": "src/tools/deps.ts",
+      "tokens": 1878,
+      "size_bytes": 8139,
+      "hash": "b0f082d754bf"
+    },
+    {
+      "path": "src/tools/fetch.ts",
+      "tokens": 1038,
+      "size_bytes": 4338,
+      "hash": "6b55567ca07d"
+    },
+    {
+      "path": "src/tools/install.ts",
+      "tokens": 1376,
+      "size_bytes": 6196,
+      "hash": "36de8f490ba4"
+    },
+    {
+      "path": "src/tools/manifest.ts",
+      "tokens": 1530,
+      "size_bytes": 7055,
+      "hash": "dbba4d5da170"
+    },
+    {
+      "path": "src/tools/observer.ts",
+      "tokens": 1312,
+      "size_bytes": 5748,
+      "hash": "e7b3fa074752"
+    },
+    {
+      "path": "src/tools/suggester.ts",
+      "tokens": 1661,
+      "size_bytes": 7490,
+      "hash": "7474d032345d"
+    },
+    {
+      "path": "src/tools/sync.ts",
+      "tokens": 1377,
+      "size_bytes": 6389,
+      "hash": "2ae795b51d04"
+    },
+    {
+      "path": "src/tools/web.ts",
+      "tokens": 2688,
+      "size_bytes": 10970,
+      "hash": "a41ddf15005f"
+    },
+    {
+      "path": "src/cli.ts",
+      "tokens": 3423,
+      "size_bytes": 14248,
+      "hash": "8510a4d630b4"
+    },
+    {
+      "path": "src/server.ts",
+      "tokens": 405,
+      "size_bytes": 1730,
+      "hash": "fce7bf6976e1"
+    },
+    {
+      "path": "src/types.ts",
+      "tokens": 1084,
+      "size_bytes": 4520,
+      "hash": "cf3f5733e9c7"
+    },
+    {
+      "path": "tests/e2e/helpers/mcp-client.ts",
+      "tokens": 983,
+      "size_bytes": 4179,
+      "hash": "043d399540b6"
+    },
+    {
+      "path": "tests/e2e/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/e2e/server.test.ts",
+      "tokens": 1258,
+      "size_bytes": 5192,
+      "hash": "9e1b55b61174"
+    },
+    {
+      "path": "tests/e2e/workflow.test.ts",
+      "tokens": 1269,
+      "size_bytes": 5094,
+      "hash": "c8937b177996"
+    },
+    {
+      "path": "tests/fixtures/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/helpers/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/helpers/setup.ts",
+      "tokens": 236,
+      "size_bytes": 1001,
+      "hash": "854c1048c331"
+    },
+    {
+      "path": "tests/integration/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/integration/audit-conflict.test.ts",
+      "tokens": 1142,
+      "size_bytes": 4931,
+      "hash": "14a573495270"
+    },
+    {
+      "path": "tests/integration/fetch-analyze-install.test.ts",
+      "tokens": 1326,
+      "size_bytes": 5668,
+      "hash": "1aa0e60631f2"
+    },
+    {
+      "path": "tests/integration/manifest-sync.test.ts",
+      "tokens": 1566,
+      "size_bytes": 6474,
+      "hash": "4b750681a080"
+    },
+    {
+      "path": "tests/integration/multi-agent.test.ts",
+      "tokens": 1769,
+      "size_bytes": 7221,
+      "hash": "9096b9ad1863"
+    },
+    {
+      "path": "tests/integration/observer-suggester.test.ts",
+      "tokens": 782,
+      "size_bytes": 3177,
+      "hash": "095f8e22a224"
+    },
+    {
+      "path": "tests/mocks/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/mocks/factories.ts",
+      "tokens": 315,
+      "size_bytes": 1238,
+      "hash": "844f41e80f01"
+    },
+    {
+      "path": "tests/mocks/git.ts",
+      "tokens": 142,
+      "size_bytes": 552,
+      "hash": "12e960cb0158"
+    },
+    {
+      "path": "tests/mocks/http.ts",
+      "tokens": 451,
+      "size_bytes": 1783,
+      "hash": "3814e088d4ac"
+    },
+    {
+      "path": "tests/unit/adapters/antigravity.test.ts",
+      "tokens": 926,
+      "size_bytes": 3872,
+      "hash": "4da7561e8e26"
+    },
+    {
+      "path": "tests/unit/adapters/claude.test.ts",
+      "tokens": 859,
+      "size_bytes": 3629,
+      "hash": "45b23d28a22d"
+    },
+    {
+      "path": "tests/unit/adapters/cursor.test.ts",
+      "tokens": 810,
+      "size_bytes": 3537,
+      "hash": "98c595d609ad"
+    },
+    {
+      "path": "tests/unit/parsers/mcp.test.ts",
+      "tokens": 842,
+      "size_bytes": 3460,
+      "hash": "29f56936c398"
+    },
+    {
+      "path": "tests/unit/parsers/readme.test.ts",
+      "tokens": 609,
+      "size_bytes": 2790,
+      "hash": "ca1bd0b67e55"
+    },
+    {
+      "path": "tests/unit/parsers/skill.test.ts",
+      "tokens": 770,
+      "size_bytes": 3264,
+      "hash": "c1f7dac917ea"
+    },
+    {
+      "path": "tests/unit/tools/analyze.test.ts",
+      "tokens": 924,
+      "size_bytes": 3958,
+      "hash": "e966e9682fe3"
+    },
+    {
+      "path": "tests/unit/tools/audit.test.ts",
+      "tokens": 1487,
+      "size_bytes": 6495,
+      "hash": "7f9ac6b58b4b"
+    },
+    {
+      "path": "tests/unit/tools/backup.test.ts",
+      "tokens": 4430,
+      "size_bytes": 20443,
+      "hash": "18d2f0d6d208"
+    },
+    {
+      "path": "tests/unit/tools/conflict.test.ts",
+      "tokens": 1672,
+      "size_bytes": 7794,
+      "hash": "fa346c5ba007"
+    },
+    {
+      "path": "tests/unit/tools/deps.test.ts",
+      "tokens": 1602,
+      "size_bytes": 7242,
+      "hash": "90737cabf1ec"
+    },
+    {
+      "path": "tests/unit/tools/fetch.test.ts",
+      "tokens": 932,
+      "size_bytes": 4054,
+      "hash": "b64c7625d4e5"
+    },
+    {
+      "path": "tests/unit/tools/install.test.ts",
+      "tokens": 1241,
+      "size_bytes": 5355,
+      "hash": "e73f097edb5d"
+    },
+    {
+      "path": "tests/unit/tools/manifest.test.ts",
+      "tokens": 1453,
+      "size_bytes": 6696,
+      "hash": "6dd5591da09c"
+    },
+    {
+      "path": "tests/unit/tools/observer.test.ts",
+      "tokens": 1236,
+      "size_bytes": 5120,
+      "hash": "251fd88fa68a"
+    },
+    {
+      "path": "tests/unit/tools/suggester.test.ts",
+      "tokens": 1943,
+      "size_bytes": 8422,
+      "hash": "51749bbb53f1"
+    },
+    {
+      "path": "tests/unit/tools/sync.test.ts",
+      "tokens": 1246,
+      "size_bytes": 5701,
+      "hash": "23e5a4a2be99"
+    },
+    {
+      "path": "tests/unit/tools/web.test.ts",
+      "tokens": 1479,
+      "size_bytes": 6855,
+      "hash": "3bdbfc3efe66"
+    },
+    {
+      "path": "tests/unit/.gitkeep",
+      "tokens": 0,
+      "size_bytes": 0,
+      "hash": "e3b0c44298fc"
+    },
+    {
+      "path": "tests/unit/smoke.test.ts",
+      "tokens": 71,
+      "size_bytes": 296,
+      "hash": "3ae067f2872e"
+    },
+    {
+      "path": "tests/README.md",
+      "tokens": 733,
+      "size_bytes": 2878,
+      "hash": "410a722f29f3"
+    },
+    {
+      "path": ".gitignore",
+      "tokens": 63,
+      "size_bytes": 238,
+      "hash": "6cba25e8df6b"
+    },
+    {
+      "path": "CLAUDE.md",
+      "tokens": 763,
+      "size_bytes": 3167,
+      "hash": "1dcb659bc7c6"
+    },
+    {
+      "path": "LICENSE",
+      "tokens": 222,
+      "size_bytes": 1067,
+      "hash": "9ff2bcc53b28"
+    },
+    {
+      "path": "package.json",
+      "tokens": 646,
+      "size_bytes": 1862,
+      "hash": "7d3445b095a9"
+    },
+    {
+      "path": "README.md",
+      "tokens": 1901,
+      "size_bytes": 7450,
+      "hash": "d8acd479dd24"
+    },
+    {
+      "path": "tsconfig.json",
+      "tokens": 126,
+      "size_bytes": 419,
+      "hash": "e84d8c8e23ee"
+    },
+    {
+      "path": "vitest.config.ts",
+      "tokens": 161,
+      "size_bytes": 591,
+      "hash": "1edeb1b0b943"
+    }
+  ],
+  "directories": [
+    ".claude",
+    ".claude/docs",
+    ".claude/docs/mcp",
+    ".github",
+    ".github/workflows",
+    "docs",
+    "skills",
+    "skills/agent-reverse-update",
+    "src",
+    "src/adapters",
+    "src/data",
+    "src/parsers",
+    "src/tools",
+    "tests",
+    "tests/e2e",
+    "tests/e2e/helpers",
+    "tests/fixtures",
+    "tests/helpers",
+    "tests/integration",
+    "tests/mocks",
+    "tests/unit",
+    "tests/unit/adapters",
+    "tests/unit/parsers",
+    "tests/unit/tools"
+  ],
+  "total_tokens": 84742,
+  "total_files": 79,
+  "skipped": [],
+  "merkle": {
+    "root_hash": "9b4384ab5a8c",
+    "tree": {
+      ".claude/docs/mcp/architecture.md": {
+        "hash": "391ed8ec8ab6",
+        "tokens": 443,
+        "type": "file"
+      },
+      ".claude/docs/mcp": {
+        "hash": "f5afc07bac2c",
+        "children": [
+          ".claude/docs/mcp/architecture.md"
+        ],
+        "type": "dir"
+      },
+      ".claude/docs": {
+        "hash": "61d51cbed382",
+        "children": [
+          ".claude/docs/mcp"
+        ],
+        "type": "dir"
+      },
+      ".claude": {
+        "hash": "e4101fa02067",
+        "children": [
+          ".claude/docs"
+        ],
+        "type": "dir"
+      },
+      ".github/workflows/ci.yml": {
+        "hash": "504754377116",
+        "tokens": 88,
+        "type": "file"
+      },
+      ".github/workflows/publish.yml": {
+        "hash": "e9339f19a570",
+        "tokens": 165,
+        "type": "file"
+      },
+      ".github/workflows/test.yml": {
+        "hash": "0d0d08ddbbd8",
+        "tokens": 263,
+        "type": "file"
+      },
+      ".github/workflows": {
+        "hash": "6348698a11c0",
+        "children": [
+          ".github/workflows/ci.yml",
+          ".github/workflows/publish.yml",
+          ".github/workflows/test.yml"
+        ],
+        "type": "dir"
+      },
+      ".github": {
+        "hash": "7774d9a86101",
+        "children": [
+          ".github/workflows"
+        ],
+        "type": "dir"
+      },
+      "docs/.cartographer.json": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "docs/BRANCHES.md": {
+        "hash": "aa35b7807498",
+        "tokens": 659,
+        "type": "file"
+      },
+      "docs/CODEBASE_MAP.md": {
+        "hash": "e5dbc3c44920",
+        "tokens": 3789,
+        "type": "file"
+      },
+      "docs/PRD.md": {
+        "hash": "3c24d904f1f4",
+        "tokens": 1233,
+        "type": "file"
+      },
+      "docs/spec.md": {
+        "hash": "0227d4658951",
+        "tokens": 2015,
+        "type": "file"
+      },
+      "docs/test_case.md": {
+        "hash": "5f94721b715f",
+        "tokens": 1021,
+        "type": "file"
+      },
+      "docs": {
+        "hash": "7b49130c714b",
+        "children": [
+          "docs/.cartographer.json",
+          "docs/BRANCHES.md",
+          "docs/CODEBASE_MAP.md",
+          "docs/PRD.md",
+          "docs/spec.md",
+          "docs/test_case.md"
+        ],
+        "type": "dir"
+      },
+      "skills/agent-reverse-update/SKILL.md": {
+        "hash": "4c3e7a438993",
+        "tokens": 308,
+        "type": "file"
+      },
+      "skills/agent-reverse-update": {
+        "hash": "b4be687a4f69",
+        "children": [
+          "skills/agent-reverse-update/SKILL.md"
+        ],
+        "type": "dir"
+      },
+      "skills/agent-reverse.md": {
+        "hash": "97b0e85414a1",
+        "tokens": 1673,
+        "type": "file"
+      },
+      "skills": {
+        "hash": "7d854f00dd00",
+        "children": [
+          "skills/agent-reverse-update",
+          "skills/agent-reverse.md"
+        ],
+        "type": "dir"
+      },
+      "src/adapters/antigravity.ts": {
+        "hash": "72acbb882bfb",
+        "tokens": 526,
+        "type": "file"
+      },
+      "src/adapters/claude.ts": {
+        "hash": "b07e1979bb2c",
+        "tokens": 1100,
+        "type": "file"
+      },
+      "src/adapters/cursor.ts": {
+        "hash": "a8d2d744aead",
+        "tokens": 518,
+        "type": "file"
+      },
+      "src/adapters": {
+        "hash": "8ac4dab029ea",
+        "children": [
+          "src/adapters/antigravity.ts",
+          "src/adapters/claude.ts",
+          "src/adapters/cursor.ts"
+        ],
+        "type": "dir"
+      },
+      "src/data/default-repos.json": {
+        "hash": "6b7f29e3e703",
+        "tokens": 180,
+        "type": "file"
+      },
+      "src/data": {
+        "hash": "e45edcafe580",
+        "children": [
+          "src/data/default-repos.json"
+        ],
+        "type": "dir"
+      },
+      "src/parsers/mcp.ts": {
+        "hash": "c136b03363a1",
+        "tokens": 1941,
+        "type": "file"
+      },
+      "src/parsers/readme.ts": {
+        "hash": "f69033e51513",
+        "tokens": 1050,
+        "type": "file"
+      },
+      "src/parsers/skill.ts": {
+        "hash": "60720dccaf5d",
+        "tokens": 476,
+        "type": "file"
+      },
+      "src/parsers": {
+        "hash": "24dc0adb139c",
+        "children": [
+          "src/parsers/mcp.ts",
+          "src/parsers/readme.ts",
+          "src/parsers/skill.ts"
+        ],
+        "type": "dir"
+      },
+      "src/tools/analyze.ts": {
+        "hash": "4dcdfb929421",
+        "tokens": 1235,
+        "type": "file"
+      },
+      "src/tools/audit.ts": {
+        "hash": "eb3b70743e33",
+        "tokens": 2147,
+        "type": "file"
+      },
+      "src/tools/backup.ts": {
+        "hash": "a72ebeff66a8",
+        "tokens": 3905,
+        "type": "file"
+      },
+      "src/tools/conflict.ts": {
+        "hash": "915f30254042",
+        "tokens": 1849,
+        "type": "file"
+      },
+      "src/tools/deps.ts": {
+        "hash": "b0f082d754bf",
+        "tokens": 1878,
+        "type": "file"
+      },
+      "src/tools/fetch.ts": {
+        "hash": "6b55567ca07d",
+        "tokens": 1038,
+        "type": "file"
+      },
+      "src/tools/install.ts": {
+        "hash": "36de8f490ba4",
+        "tokens": 1376,
+        "type": "file"
+      },
+      "src/tools/manifest.ts": {
+        "hash": "dbba4d5da170",
+        "tokens": 1530,
+        "type": "file"
+      },
+      "src/tools/observer.ts": {
+        "hash": "e7b3fa074752",
+        "tokens": 1312,
+        "type": "file"
+      },
+      "src/tools/suggester.ts": {
+        "hash": "7474d032345d",
+        "tokens": 1661,
+        "type": "file"
+      },
+      "src/tools/sync.ts": {
+        "hash": "2ae795b51d04",
+        "tokens": 1377,
+        "type": "file"
+      },
+      "src/tools/web.ts": {
+        "hash": "a41ddf15005f",
+        "tokens": 2688,
+        "type": "file"
+      },
+      "src/tools": {
+        "hash": "7d2e6953ef88",
+        "children": [
+          "src/tools/analyze.ts",
+          "src/tools/audit.ts",
+          "src/tools/backup.ts",
+          "src/tools/conflict.ts",
+          "src/tools/deps.ts",
+          "src/tools/fetch.ts",
+          "src/tools/install.ts",
+          "src/tools/manifest.ts",
+          "src/tools/observer.ts",
+          "src/tools/suggester.ts",
+          "src/tools/sync.ts",
+          "src/tools/web.ts"
+        ],
+        "type": "dir"
+      },
+      "src/cli.ts": {
+        "hash": "8510a4d630b4",
+        "tokens": 3423,
+        "type": "file"
+      },
+      "src/server.ts": {
+        "hash": "fce7bf6976e1",
+        "tokens": 405,
+        "type": "file"
+      },
+      "src/types.ts": {
+        "hash": "cf3f5733e9c7",
+        "tokens": 1084,
+        "type": "file"
+      },
+      "src": {
+        "hash": "885c9b0945da",
+        "children": [
+          "src/adapters",
+          "src/data",
+          "src/parsers",
+          "src/tools",
+          "src/cli.ts",
+          "src/server.ts",
+          "src/types.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/e2e/helpers/mcp-client.ts": {
+        "hash": "043d399540b6",
+        "tokens": 983,
+        "type": "file"
+      },
+      "tests/e2e/helpers": {
+        "hash": "d020117bb5a2",
+        "children": [
+          "tests/e2e/helpers/mcp-client.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/e2e/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/e2e/server.test.ts": {
+        "hash": "9e1b55b61174",
+        "tokens": 1258,
+        "type": "file"
+      },
+      "tests/e2e/workflow.test.ts": {
+        "hash": "c8937b177996",
+        "tokens": 1269,
+        "type": "file"
+      },
+      "tests/e2e": {
+        "hash": "527786d06fab",
+        "children": [
+          "tests/e2e/helpers",
+          "tests/e2e/.gitkeep",
+          "tests/e2e/server.test.ts",
+          "tests/e2e/workflow.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/fixtures/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/fixtures": {
+        "hash": "4b9f7d802648",
+        "children": [
+          "tests/fixtures/.gitkeep"
+        ],
+        "type": "dir"
+      },
+      "tests/helpers/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/helpers/setup.ts": {
+        "hash": "854c1048c331",
+        "tokens": 236,
+        "type": "file"
+      },
+      "tests/helpers": {
+        "hash": "40d538573e87",
+        "children": [
+          "tests/helpers/.gitkeep",
+          "tests/helpers/setup.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/integration/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/integration/audit-conflict.test.ts": {
+        "hash": "14a573495270",
+        "tokens": 1142,
+        "type": "file"
+      },
+      "tests/integration/fetch-analyze-install.test.ts": {
+        "hash": "1aa0e60631f2",
+        "tokens": 1326,
+        "type": "file"
+      },
+      "tests/integration/manifest-sync.test.ts": {
+        "hash": "4b750681a080",
+        "tokens": 1566,
+        "type": "file"
+      },
+      "tests/integration/multi-agent.test.ts": {
+        "hash": "9096b9ad1863",
+        "tokens": 1769,
+        "type": "file"
+      },
+      "tests/integration/observer-suggester.test.ts": {
+        "hash": "095f8e22a224",
+        "tokens": 782,
+        "type": "file"
+      },
+      "tests/integration": {
+        "hash": "3ea9229e10ab",
+        "children": [
+          "tests/integration/.gitkeep",
+          "tests/integration/audit-conflict.test.ts",
+          "tests/integration/fetch-analyze-install.test.ts",
+          "tests/integration/manifest-sync.test.ts",
+          "tests/integration/multi-agent.test.ts",
+          "tests/integration/observer-suggester.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/mocks/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/mocks/factories.ts": {
+        "hash": "844f41e80f01",
+        "tokens": 315,
+        "type": "file"
+      },
+      "tests/mocks/git.ts": {
+        "hash": "12e960cb0158",
+        "tokens": 142,
+        "type": "file"
+      },
+      "tests/mocks/http.ts": {
+        "hash": "3814e088d4ac",
+        "tokens": 451,
+        "type": "file"
+      },
+      "tests/mocks": {
+        "hash": "98354e058262",
+        "children": [
+          "tests/mocks/.gitkeep",
+          "tests/mocks/factories.ts",
+          "tests/mocks/git.ts",
+          "tests/mocks/http.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/unit/adapters/antigravity.test.ts": {
+        "hash": "4da7561e8e26",
+        "tokens": 926,
+        "type": "file"
+      },
+      "tests/unit/adapters/claude.test.ts": {
+        "hash": "45b23d28a22d",
+        "tokens": 859,
+        "type": "file"
+      },
+      "tests/unit/adapters/cursor.test.ts": {
+        "hash": "98c595d609ad",
+        "tokens": 810,
+        "type": "file"
+      },
+      "tests/unit/adapters": {
+        "hash": "835d5c4aaf93",
+        "children": [
+          "tests/unit/adapters/antigravity.test.ts",
+          "tests/unit/adapters/claude.test.ts",
+          "tests/unit/adapters/cursor.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/unit/parsers/mcp.test.ts": {
+        "hash": "29f56936c398",
+        "tokens": 842,
+        "type": "file"
+      },
+      "tests/unit/parsers/readme.test.ts": {
+        "hash": "ca1bd0b67e55",
+        "tokens": 609,
+        "type": "file"
+      },
+      "tests/unit/parsers/skill.test.ts": {
+        "hash": "c1f7dac917ea",
+        "tokens": 770,
+        "type": "file"
+      },
+      "tests/unit/parsers": {
+        "hash": "cad1689b3521",
+        "children": [
+          "tests/unit/parsers/mcp.test.ts",
+          "tests/unit/parsers/readme.test.ts",
+          "tests/unit/parsers/skill.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/unit/tools/analyze.test.ts": {
+        "hash": "e966e9682fe3",
+        "tokens": 924,
+        "type": "file"
+      },
+      "tests/unit/tools/audit.test.ts": {
+        "hash": "7f9ac6b58b4b",
+        "tokens": 1487,
+        "type": "file"
+      },
+      "tests/unit/tools/backup.test.ts": {
+        "hash": "18d2f0d6d208",
+        "tokens": 4430,
+        "type": "file"
+      },
+      "tests/unit/tools/conflict.test.ts": {
+        "hash": "fa346c5ba007",
+        "tokens": 1672,
+        "type": "file"
+      },
+      "tests/unit/tools/deps.test.ts": {
+        "hash": "90737cabf1ec",
+        "tokens": 1602,
+        "type": "file"
+      },
+      "tests/unit/tools/fetch.test.ts": {
+        "hash": "b64c7625d4e5",
+        "tokens": 932,
+        "type": "file"
+      },
+      "tests/unit/tools/install.test.ts": {
+        "hash": "e73f097edb5d",
+        "tokens": 1241,
+        "type": "file"
+      },
+      "tests/unit/tools/manifest.test.ts": {
+        "hash": "6dd5591da09c",
+        "tokens": 1453,
+        "type": "file"
+      },
+      "tests/unit/tools/observer.test.ts": {
+        "hash": "251fd88fa68a",
+        "tokens": 1236,
+        "type": "file"
+      },
+      "tests/unit/tools/suggester.test.ts": {
+        "hash": "51749bbb53f1",
+        "tokens": 1943,
+        "type": "file"
+      },
+      "tests/unit/tools/sync.test.ts": {
+        "hash": "23e5a4a2be99",
+        "tokens": 1246,
+        "type": "file"
+      },
+      "tests/unit/tools/web.test.ts": {
+        "hash": "3bdbfc3efe66",
+        "tokens": 1479,
+        "type": "file"
+      },
+      "tests/unit/tools": {
+        "hash": "582e57c1cede",
+        "children": [
+          "tests/unit/tools/analyze.test.ts",
+          "tests/unit/tools/audit.test.ts",
+          "tests/unit/tools/backup.test.ts",
+          "tests/unit/tools/conflict.test.ts",
+          "tests/unit/tools/deps.test.ts",
+          "tests/unit/tools/fetch.test.ts",
+          "tests/unit/tools/install.test.ts",
+          "tests/unit/tools/manifest.test.ts",
+          "tests/unit/tools/observer.test.ts",
+          "tests/unit/tools/suggester.test.ts",
+          "tests/unit/tools/sync.test.ts",
+          "tests/unit/tools/web.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/unit/.gitkeep": {
+        "hash": "e3b0c44298fc",
+        "tokens": 0,
+        "type": "file"
+      },
+      "tests/unit/smoke.test.ts": {
+        "hash": "3ae067f2872e",
+        "tokens": 71,
+        "type": "file"
+      },
+      "tests/unit": {
+        "hash": "f6a9a7d348f1",
+        "children": [
+          "tests/unit/adapters",
+          "tests/unit/parsers",
+          "tests/unit/tools",
+          "tests/unit/.gitkeep",
+          "tests/unit/smoke.test.ts"
+        ],
+        "type": "dir"
+      },
+      "tests/README.md": {
+        "hash": "410a722f29f3",
+        "tokens": 733,
+        "type": "file"
+      },
+      "tests": {
+        "hash": "55575926e131",
+        "children": [
+          "tests/e2e",
+          "tests/fixtures",
+          "tests/helpers",
+          "tests/integration",
+          "tests/mocks",
+          "tests/unit",
+          "tests/README.md"
+        ],
+        "type": "dir"
+      },
+      ".gitignore": {
+        "hash": "6cba25e8df6b",
+        "tokens": 63,
+        "type": "file"
+      },
+      "CLAUDE.md": {
+        "hash": "1dcb659bc7c6",
+        "tokens": 763,
+        "type": "file"
+      },
+      "LICENSE": {
+        "hash": "9ff2bcc53b28",
+        "tokens": 222,
+        "type": "file"
+      },
+      "package.json": {
+        "hash": "7d3445b095a9",
+        "tokens": 646,
+        "type": "file"
+      },
+      "README.md": {
+        "hash": "d8acd479dd24",
+        "tokens": 1901,
+        "type": "file"
+      },
+      "tsconfig.json": {
+        "hash": "e84d8c8e23ee",
+        "tokens": 126,
+        "type": "file"
+      },
+      "vitest.config.ts": {
+        "hash": "1edeb1b0b943",
+        "tokens": 161,
+        "type": "file"
+      },
+      "/": {
+        "hash": "9b4384ab5a8c",
+        "children": [
+          ".claude",
+          ".github",
+          "docs",
+          "skills",
+          "src",
+          "tests",
+          ".gitignore",
+          "CLAUDE.md",
+          "LICENSE",
+          "package.json",
+          "README.md",
+          "tsconfig.json",
+          "vitest.config.ts"
+        ],
+        "type": "dir"
+      }
+    }
+  }
+}
