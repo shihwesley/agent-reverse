@@ -204,3 +204,126 @@ export interface RestoreResult {
   converted: boolean;        // true if cross-agent restore
   errors: string[];
 }
+
+// Security scanning types (Phase 7B)
+
+export type SecuritySeverity = 'critical' | 'medium' | 'low';
+export type SecurityCategory =
+  | 'remote_execution'
+  | 'data_exfiltration'
+  | 'secret_access'
+  | 'persistence'
+  | 'destructive_ops'
+  | 'obfuscation';
+
+export interface SecurityPattern {
+  category: SecurityCategory;
+  severity: SecuritySeverity;
+  pattern: string;
+  description: string;
+}
+
+export interface SecurityFinding {
+  category: SecurityCategory;
+  severity: SecuritySeverity;
+  line: number;
+  file: string;
+  pattern: string;
+  context: string;
+}
+
+export interface SecurityReport {
+  capabilityId: string;
+  riskScore: number;
+  findings: SecurityFinding[];
+  verdict: 'blocked' | 'needs_confirmation' | 'clear';
+  scannedAt: string;
+}
+
+// Local introspection types (Phase 7A)
+
+export interface LocalSkillInfo {
+  name: string;
+  path: string;
+  userInvocable: boolean;
+  size: number;
+  modifiedAt: string;
+}
+
+export interface LocalHookInfo {
+  event: string;
+  command: string;
+  path: string;
+}
+
+export interface LocalMcpServer {
+  name: string;
+  transport: string;
+  command?: string;
+  url?: string;
+}
+
+export interface LocalState {
+  claudeCodeVersion: string;
+  settings: Record<string, unknown>;
+  keybindings: Record<string, unknown>;
+  skills: LocalSkillInfo[];
+  commands: LocalSkillInfo[];
+  hooks: LocalHookInfo[];
+  mcpServers: LocalMcpServer[];
+  agents: string[];
+}
+
+export interface LocalStateCache {
+  version: string;
+  scannedAt: string;
+  claudeCodeVersion: string;
+  fileHashes: Record<string, string>;
+  state: LocalState;
+}
+
+export interface OptimizationFinding {
+  type: 'dead_skill' | 'deprecated_setting' | 'missing_hook' | 'unhealthy_mcp' | 'duplicate_scope';
+  severity: 'safe' | 'breaking' | 'info';
+  description: string;
+  autoFixable: boolean;
+  applied?: boolean;
+}
+
+export interface OptimizeResult {
+  findings: OptimizationFinding[];
+  applied: number;
+  needsReview: number;
+  backupPath?: string;
+}
+
+// Changelog types (Phase 7C)
+
+export interface ChangelogEntry {
+  version: string;
+  date?: string;
+  newFeatures: string[];
+  breakingChanges: string[];
+  deprecations: string[];
+  bugFixes: string[];
+  configChanges: string[];
+}
+
+export interface MigrationRule {
+  pattern: string;
+  action: 'rename_setting' | 'remove_setting' | 'add_setting' | 'suggest_hook' | 'info';
+  severity: 'safe' | 'breaking' | 'info';
+  from?: string;
+  to?: string;
+  description: string;
+  since: string;
+}
+
+export interface MigrationResult {
+  previousVersion: string;
+  currentVersion: string;
+  entries: ChangelogEntry[];
+  applied: Array<{ rule: MigrationRule; success: boolean }>;
+  pendingReview: MigrationRule[];
+  infoOnly: string[];
+}
