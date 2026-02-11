@@ -10,7 +10,8 @@ import { installForCursor } from '../adapters/cursor.js';
 import { installForAntigravity } from '../adapters/antigravity.js';
 import { addCapability } from './manifest.js';
 import { parseSkillFile } from '../parsers/skill.js';
-import type { TargetAgent, ParsedSkill, InstallScope } from '../types.js';
+import type { TargetAgent, ParsedSkill, InstallScope, SecurityReport } from '../types.js';
+import { scanCapability } from './security.js';
 
 export interface InstallOptions {
   skillPath: string;        // Path to skill file in cloned repo
@@ -22,6 +23,7 @@ export interface InstallOptions {
   workspaceRoot: string;    // Where to install
   scope?: InstallScope;     // For Antigravity: 'project' or 'global'
   userInvocable?: boolean;  // Override: force install as command (true) or skill (false)
+  forceInstall?: boolean;   // Override security scan blocks
 }
 
 export interface InstallResultFull {
@@ -32,6 +34,7 @@ export interface InstallResultFull {
   manifestUpdated: boolean;
   userInvocable: boolean;
   errors: string[];
+  securityReport?: SecurityReport;
 }
 
 export async function installCapability(options: InstallOptions): Promise<InstallResultFull> {
@@ -53,6 +56,18 @@ export async function installCapability(options: InstallOptions): Promise<Instal
 
     if (!skill) {
       result.errors.push(`Failed to parse skill file: ${options.skillPath}`);
+      return result;
+    }
+
+    // Security scan gate
+    const securityReport = await scanCapability(options.capabilityId, fullSkillPath);
+    result.securityReport = securityReport;
+
+    if (securityReport.verdict === 'blocked' && !options.forceInstall) {
+      result.errors.push(
+        `Security scan blocked install: ${securityReport.findings.length} finding(s), ` +
+        `risk score ${securityReport.riskScore}/10. Use forceInstall to override.`
+      );
       return result;
     }
 
@@ -159,9 +174,12 @@ export function registerInstallTool(server: McpServer): void {
         userInvocable: z.boolean()
           .optional()
           .describe('Override: true installs to commands/ (slash command), false to skills/ (agent-only). If omitted, uses source frontmatter.'),
+        forceInstall: z.boolean()
+          .optional()
+          .describe('Override security scan blocks (not recommended)'),
       },
     },
-    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope, userInvocable }) => {
+    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope, userInvocable, forceInstall }) => {
       const result = await installCapability({
         skillPath,
         sourceRepoPath,
@@ -172,6 +190,7 @@ export function registerInstallTool(server: McpServer): void {
         workspaceRoot: workspaceRoot || process.cwd(),
         scope: scope as InstallScope | undefined,
         userInvocable,
+        forceInstall,
       });
 
       return {
