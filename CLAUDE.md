@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-MCP server for surgical extraction of agent capabilities from GitHub repos. Prevents bloat by installing only what you need.
+Reverse engineering engine for agent capabilities. Extracts, analyzes, and installs skills and tools from any source — GitHub repos, local Claude Code settings, installed binaries, articles, or raw configs. Includes security scanning on installs and changelog-aware auto-migration when Claude Code updates.
 
 ## Build Commands
 
