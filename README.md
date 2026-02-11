@@ -24,9 +24,9 @@ npx -y @shihwesley/agent-reverse setup
 ```
 
 Restart Claude Code. You now have:
-- **26 MCP tools** for surgical extraction
-- **/agent-reverse** - Analyze and install skills from GitHub repos
-- **/agent-reverse-update** - Check for skill updates on session start
+- **30 MCP tools** for surgical extraction, security scanning, and local introspection
+- **/agent-reverse** - Reverse engineer capabilities from repos, local configs, articles, or your own Claude Code setup
+- **/agent-reverse-update** - Check for skill updates and Claude Code version changes on session start
 
 ### Upgrading
 

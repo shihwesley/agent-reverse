@@ -4,6 +4,18 @@
 
 Reverse engineering engine for agent capabilities. Extracts, analyzes, and installs skills and tools from any source — GitHub repos, local Claude Code settings, installed binaries, articles, or raw configs. Includes security scanning on installs and changelog-aware auto-migration when Claude Code updates.
 
+## What's New in v2.0.0
+
+**Security Scanner (Phase 7B)** — Every `install_capability` call is now gated by `security_scan`. Pattern-based (regex + AST, zero LLM cost), checks 6 categories: remote execution, data exfiltration, secret access, persistence, destructive ops, obfuscation. Tiered enforcement: critical blocks, medium warns, low informs. Override with `forceInstall`.
+
+**Local Introspection (Phase 7A)** — `local_scan` inventories your entire Claude Code environment (skills, commands, hooks, MCP servers, keybindings, binary version). `local_optimize` finds dead skills, deprecated settings, duplicate scopes. Cached with SHA256 file hashes so repeat calls only rescan what changed.
+
+**Changelog Awareness (Phase 7C)** — `changelog_check` compares your Claude Code version against cache. When a version bump is detected, it fetches changelogs from npm + GitHub, matches against static migration rules, and auto-applies safe changes. Breaking changes are presented for approval. Zero cost when version hasn't changed.
+
+**Reframed skill** — agent-reverse is no longer repo-only. `analyze local` health-checks your setup, `analyze <path>` reads local files, `analyze <url>` handles repos and articles. The tool is now a general-purpose reverse engineering engine.
+
+**30 MCP tools** total (up from 26).
+
 ## Build Commands
 
 ```bash
