@@ -20,10 +20,14 @@ import { registerDepsTools } from './tools/deps.js';
 import { registerWebTools } from './tools/web.js';
 // Tool imports (Phase 6 - Backup)
 import { registerBackupTools } from './tools/backup.js';
+// Tool imports (Phase 7 - Security, Local, Changelog)
+import { registerSecurityTools } from './tools/security.js';
+import { registerLocalTools } from './tools/local.js';
+import { registerChangelogTools } from './tools/changelog.js';
 
 const server = new McpServer({
   name: 'agent-reverse',
-  version: '0.1.0',
+  version: '2.0.0',
 });
 
 // Register tools
@@ -39,6 +43,9 @@ registerConflictTools(server);
 registerDepsTools(server);
 registerWebTools(server);
 registerBackupTools(server);
+registerSecurityTools(server);
+registerLocalTools(server);
+registerChangelogTools(server);
 
 async function main() {
   const transport = new StdioServerTransport();

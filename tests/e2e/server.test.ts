@@ -34,7 +34,7 @@ describe('E2E: MCP Server', () => {
     }
   });
 
-  it('should expose all 26 MCP tools', async () => {
+  it('should expose all 30 MCP tools', async () => {
     const tools = await client.listTools();
     const toolNames = tools.map(t => t.name);
 
@@ -63,12 +63,18 @@ describe('E2E: MCP Server', () => {
       'web_interpret', 'web_fetch',
       // Backup tools
       'backup_create', 'backup_restore', 'backup_list',
+      // Security tools
+      'security_scan',
+      // Local tools
+      'local_scan', 'local_optimize',
+      // Changelog tools
+      'changelog_check',
     ];
 
     for (const tool of expectedTools) {
       expect(toolNames, `Missing tool: ${tool}`).toContain(tool);
     }
-    expect(toolNames).toHaveLength(26);
+    expect(toolNames).toHaveLength(30);
   });
 
   it('should execute manifest_list tool on empty project', async () => {
