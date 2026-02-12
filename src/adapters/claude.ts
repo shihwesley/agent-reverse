@@ -2,8 +2,7 @@
 // Writes to .claude/skills/ and updates CLAUDE.md
 
 import { mkdir, writeFile, readFile, copyFile } from 'fs/promises';
-import { join, basename, dirname } from 'path';
-import type { Capability } from '../types.js';
+import { join } from 'path';
 import type { ParsedSkill } from '../types.js';
 
 export interface InstallResult {
@@ -13,14 +12,7 @@ export interface InstallResult {
 }
 
 const SKILLS_DIR = '.claude/skills';
-const COMMANDS_DIR = '.claude/commands';
 const CONFIG_FILE = 'CLAUDE.md';
-
-function getTargetDir(skill: ParsedSkill): string {
-  return skill.frontmatter['user-invocable'] === true
-    ? COMMANDS_DIR
-    : SKILLS_DIR;
-}
 
 export async function installForClaudeCode(
   skill: ParsedSkill,
@@ -35,21 +27,20 @@ export async function installForClaudeCode(
   };
 
   try {
-    // Determine target directory based on user-invocable frontmatter
-    const targetDir = getTargetDir(skill);
-    const targetDirPath = join(workspaceRoot, targetDir);
-    await mkdir(targetDirPath, { recursive: true });
+    // Write to .claude/skills/<capabilityId>/SKILL.md (directory-based convention)
+    const skillDir = join(SKILLS_DIR, capabilityId);
+    const skillDirPath = join(workspaceRoot, skillDir);
+    await mkdir(skillDirPath, { recursive: true });
 
-    // Determine target filename
-    const targetFileName = `${capabilityId}.md`;
-    const targetPath = join(targetDirPath, targetFileName);
+    const targetFileName = 'SKILL.md';
+    const targetPath = join(skillDirPath, targetFileName);
 
     // Build skill content with frontmatter
     const skillContent = buildSkillContent(skill, capabilityId);
 
     // Write skill file
     await writeFile(targetPath, skillContent, 'utf-8');
-    result.filesWritten.push(join(targetDir, targetFileName));
+    result.filesWritten.push(join(skillDir, targetFileName));
 
     // Update CLAUDE.md with usage hint
     const configUpdated = await updateClaudeMd(workspaceRoot, skill, capabilityId);
@@ -141,19 +132,23 @@ async function updateClaudeMd(
   }
 }
 
-// Copy raw file (for non-skill files)
+// Copy raw file into a skill subdirectory
 export async function copyFileToSkills(
   sourcePath: string,
   workspaceRoot: string,
-  targetName: string,
-  userInvocable?: boolean
+  targetName: string
 ): Promise<string> {
-  const targetDir = userInvocable ? COMMANDS_DIR : SKILLS_DIR;
-  const targetDirPath = join(workspaceRoot, targetDir);
-  await mkdir(targetDirPath, { recursive: true });
+  // Derive skill directory name from the target filename
+  const baseName = targetName.replace(/\.(md|mdc)$/, '');
+  const isMarkdown = targetName.endsWith('.md') || targetName.endsWith('.mdc');
+  const fileName = isMarkdown ? 'SKILL.md' : targetName;
 
-  const targetPath = join(targetDirPath, targetName);
+  const skillDir = join(SKILLS_DIR, baseName);
+  const skillDirPath = join(workspaceRoot, skillDir);
+  await mkdir(skillDirPath, { recursive: true });
+
+  const targetPath = join(skillDirPath, fileName);
   await copyFile(sourcePath, targetPath);
 
-  return join(targetDir, targetName);
+  return join(skillDir, fileName);
 }

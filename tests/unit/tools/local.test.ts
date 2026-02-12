@@ -28,8 +28,9 @@ describe('Local Scanner', () => {
     }));
   });
 
-  it('should scan and return LocalState with skills inventory', async () => {
-    vol.writeFileSync('/home/user/.claude/skills/test-skill.md', `---
+  it('should scan directory-based skills (SKILL.md in subdirectory)', async () => {
+    vol.mkdirSync('/home/user/.claude/skills/test-skill', { recursive: true });
+    vol.writeFileSync('/home/user/.claude/skills/test-skill/SKILL.md', `---
 name: test-skill
 description: A test
 ---
@@ -39,6 +40,18 @@ Content`);
     expect(state.skills).toHaveLength(1);
     expect(state.skills[0].name).toBe('test-skill');
     expect(state.claudeCodeVersion).toBe('2.1.39');
+  });
+
+  it('should scan legacy flat .md files in skills/ as fallback', async () => {
+    vol.writeFileSync('/home/user/.claude/skills/old-skill.md', `---
+name: old-skill
+description: Legacy flat file
+---
+Content`);
+
+    const state = await scanLocalEnvironment();
+    expect(state.skills).toHaveLength(1);
+    expect(state.skills[0].name).toBe('old-skill');
   });
 
   it('should scan commands directory', async () => {

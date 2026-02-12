@@ -182,8 +182,8 @@ name: Incoming
       expect(result.superseded).toContain('existing');
       expect(result.synthesisReport).toContain('existing');
 
-      // Check synthesized file was created
-      const synthesizedPath = '/project/.claude/skills/existing-merged.md';
+      // Check synthesized file was created (now uses directory convention)
+      const synthesizedPath = '/project/.claude/skills/existing-merged/SKILL.md';
       expect(vol.existsSync(synthesizedPath)).toBe(true);
       const merged = vol.readFileSync(synthesizedPath, 'utf8') as string;
       expect(merged).toContain('Point A');

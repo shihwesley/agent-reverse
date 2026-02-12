@@ -160,7 +160,7 @@ export async function resolveDeps(
     // Look for skill files in common locations
     const skillPaths = [
       `skills/${capabilityId}.md`,
-      `.claude/skills/${capabilityId}.md`,
+      `.claude/skills/${capabilityId}/SKILL.md`,
       `${capabilityId}.md`,
     ];
 

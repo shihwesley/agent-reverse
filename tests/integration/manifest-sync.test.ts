@@ -70,8 +70,8 @@ describe('Integration: Manifest Sync Flow', () => {
     expect(syncResult.installed).toHaveLength(2);
     expect(syncResult.installed).toContain('cap-1');
     expect(syncResult.installed).toContain('cap-2');
-    expect(vol.existsSync('/project/.claude/skills/cap-1.md')).toBe(true);
-    expect(vol.existsSync('/project/.claude/skills/cap-2.md')).toBe(true);
+    expect(vol.existsSync('/project/.claude/skills/cap-1/SKILL.md')).toBe(true);
+    expect(vol.existsSync('/project/.claude/skills/cap-2/SKILL.md')).toBe(true);
   });
 
   it('should check for updates and report outdated', async () => {

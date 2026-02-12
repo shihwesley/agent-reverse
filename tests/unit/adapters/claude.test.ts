@@ -25,8 +25,8 @@ describe('Claude Adapter', () => {
 
       const result = await installForClaudeCode(skill, '/source', '/project', 'cap-123');
 
-      expect(result.filesWritten).toContain('.claude/skills/cap-123.md');
-      expect(vol.existsSync('/project/.claude/skills/cap-123.md')).toBe(true);
+      expect(result.filesWritten).toContain('.claude/skills/cap-123/SKILL.md');
+      expect(vol.existsSync('/project/.claude/skills/cap-123/SKILL.md')).toBe(true);
     });
 
     it('should include skill content in file', async () => {
@@ -37,7 +37,7 @@ describe('Claude Adapter', () => {
 
       await installForClaudeCode(skill, '/source', '/project', 'content-cap');
 
-      const content = vol.readFileSync('/project/.claude/skills/content-cap.md', 'utf8');
+      const content = vol.readFileSync('/project/.claude/skills/content-cap/SKILL.md', 'utf8');
       expect(content).toContain('# Test Content');
       expect(content).toContain('This is the body.');
     });
@@ -50,7 +50,7 @@ describe('Claude Adapter', () => {
 
       await installForClaudeCode(skill, '/source', '/project', 'fm-cap');
 
-      const content = vol.readFileSync('/project/.claude/skills/fm-cap.md', 'utf8');
+      const content = vol.readFileSync('/project/.claude/skills/fm-cap/SKILL.md', 'utf8');
       expect(content).toContain('---');
       expect(content).toContain('name: frontmatter-skill');
       expect(content).toContain('agent-reverse-id: fm-cap');
@@ -61,7 +61,7 @@ describe('Claude Adapter', () => {
 
       await installForClaudeCode(skill, '/source', '/project', 'new-cap');
 
-      expect(vol.existsSync('/project/.claude/skills')).toBe(true);
+      expect(vol.existsSync('/project/.claude/skills/new-cap')).toBe(true);
     });
 
     it('should update CLAUDE.md with usage hint', async () => {
@@ -95,7 +95,7 @@ describe('Claude Adapter', () => {
 
       await installForClaudeCode(skill, '/source', '/project', 'clean-id');
 
-      expect(vol.existsSync('/project/.claude/skills/clean-id.md')).toBe(true);
+      expect(vol.existsSync('/project/.claude/skills/clean-id/SKILL.md')).toBe(true);
     });
   });
 });

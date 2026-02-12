@@ -46,7 +46,61 @@ async function safeReadDir(path: string): Promise<string[]> {
   catch { return []; }
 }
 
+// Scan directory-based skills: each subdirectory contains SKILL.md
 async function scanSkillsDir(dir: string, userInvocable: boolean): Promise<LocalSkillInfo[]> {
+  const entries = await safeReadDir(dir);
+  const skills: LocalSkillInfo[] = [];
+
+  for (const entry of entries) {
+    const entryPath = join(dir, entry);
+
+    // New convention: subdirectory with SKILL.md
+    const skillFile = join(entryPath, 'SKILL.md');
+    try {
+      const fileStat = await stat(skillFile);
+      if (fileStat.isFile()) {
+        const content = await readFile(skillFile, 'utf-8');
+        const parsed = parseSkillFile(content, skillFile);
+        skills.push({
+          name: parsed?.name || entry,
+          path: skillFile,
+          userInvocable,
+          size: fileStat.size,
+          modifiedAt: fileStat.mtime.toISOString(),
+        });
+        continue;
+      }
+    } catch { /* not a directory skill, try flat file fallback */ }
+
+    // Legacy flat file fallback (for old .md files still in skills/)
+    if (entry.endsWith('.md')) {
+      try {
+        const content = await readFile(entryPath, 'utf-8');
+        const fileStat = await stat(entryPath);
+        const parsed = parseSkillFile(content, entryPath);
+        skills.push({
+          name: parsed?.name || basename(entry, '.md'),
+          path: entryPath,
+          userInvocable,
+          size: fileStat.size,
+          modifiedAt: fileStat.mtime.toISOString(),
+        });
+      } catch {
+        skills.push({
+          name: basename(entry, '.md'),
+          path: entryPath,
+          userInvocable,
+          size: 0,
+          modifiedAt: new Date().toISOString(),
+        });
+      }
+    }
+  }
+  return skills;
+}
+
+// Scan legacy flat commands directory (backward compat, read-only)
+async function scanCommandsDir(dir: string): Promise<LocalSkillInfo[]> {
   const files = await safeReadDir(dir);
   const skills: LocalSkillInfo[] = [];
   for (const file of files) {
@@ -59,7 +113,7 @@ async function scanSkillsDir(dir: string, userInvocable: boolean): Promise<Local
       skills.push({
         name: parsed?.name || basename(file, '.md'),
         path: fullPath,
-        userInvocable,
+        userInvocable: true,
         size: fileStat.size,
         modifiedAt: fileStat.mtime.toISOString(),
       });
@@ -67,7 +121,7 @@ async function scanSkillsDir(dir: string, userInvocable: boolean): Promise<Local
       skills.push({
         name: basename(file, '.md'),
         path: fullPath,
-        userInvocable,
+        userInvocable: true,
         size: 0,
         modifiedAt: new Date().toISOString(),
       });
@@ -120,7 +174,7 @@ export async function scanLocalEnvironment(): Promise<LocalState> {
 
   const [skills, commands, agents] = await Promise.all([
     scanSkillsDir(join(claudeDir, 'skills'), false),
-    scanSkillsDir(join(claudeDir, 'commands'), true),
+    scanCommandsDir(join(claudeDir, 'commands')),
     safeReadDir(join(claudeDir, 'agents')),
   ]);
 
@@ -201,7 +255,7 @@ export async function optimizeLocalEnvironment(state: LocalState): Promise<Optim
     findings.push({
       type: 'duplicate_scope',
       severity: 'info',
-      description: `"${name}" exists in both skills/ and commands/`,
+      description: `"${name}" exists in both skills/ and legacy commands/`,
       autoFixable: false,
     });
   }

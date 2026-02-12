@@ -226,7 +226,7 @@ async function writeSkill(
   workspaceRoot: string,
   skill: SynthesizedSkill
 ): Promise<string> {
-  const skillPath = `.claude/skills/${skill.name}.md`;
+  const skillPath = `.claude/skills/${skill.name}/SKILL.md`;
   const fullPath = join(workspaceRoot, skillPath);
 
   // Ensure directory exists

@@ -5,7 +5,7 @@ export function createMockCapability(overrides: Partial<Capability> = {}): Capab
     id: 'test-capability',
     source: 'https://github.com/test/repo',
     commit: 'abc123',
-    files: ['.claude/skills/test.md'],
+    files: ['.claude/skills/test/SKILL.md'],
     dependencies: [],
     status: 'installed',
     extractedFrom: 'skills/test.md',

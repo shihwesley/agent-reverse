@@ -138,6 +138,6 @@ Point B from incoming`);
     expect(result.result).toBe('synthesized');
 
     // Verify merged file exists
-    expect(vol.existsSync('/project/.claude/skills/existing-merged.md')).toBe(true);
+    expect(vol.existsSync('/project/.claude/skills/existing-merged/SKILL.md')).toBe(true);
   });
 });

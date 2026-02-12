@@ -22,7 +22,6 @@ export interface InstallOptions {
   targetAgent: TargetAgent; // Target agent system
   workspaceRoot: string;    // Where to install
   scope?: InstallScope;     // For Antigravity: 'project' or 'global'
-  userInvocable?: boolean;  // Override: force install as command (true) or skill (false)
   forceInstall?: boolean;   // Override security scan blocks
 }
 
@@ -32,7 +31,6 @@ export interface InstallResultFull {
   filesWritten: string[];
   configUpdated: boolean;
   manifestUpdated: boolean;
-  userInvocable: boolean;
   errors: string[];
   securityReport?: SecurityReport;
 }
@@ -44,7 +42,6 @@ export async function installCapability(options: InstallOptions): Promise<Instal
     filesWritten: [],
     configUpdated: false,
     manifestUpdated: false,
-    userInvocable: false,
     errors: [],
   };
 
@@ -70,13 +67,6 @@ export async function installCapability(options: InstallOptions): Promise<Instal
       );
       return result;
     }
-
-    // Apply userInvocable override if provided
-    if (options.userInvocable !== undefined) {
-      skill.frontmatter['user-invocable'] = options.userInvocable;
-    }
-
-    result.userInvocable = skill.frontmatter['user-invocable'] === true;
 
     // Install based on target agent
     let installResult;
@@ -125,7 +115,6 @@ export async function installCapability(options: InstallOptions): Promise<Instal
     }
 
     // Update manifest
-    const userInvocable = skill.frontmatter['user-invocable'] === true;
     const manifestResult = await addCapability(options.workspaceRoot, {
       id: options.capabilityId,
       source: options.sourceUrl,
@@ -135,7 +124,6 @@ export async function installCapability(options: InstallOptions): Promise<Instal
       dependencies: [],
       status: 'installed',
       installedAt: new Date().toISOString(),
-      userInvocable,
     });
 
     result.manifestUpdated = manifestResult.success;
@@ -171,15 +159,12 @@ export function registerInstallTool(server: McpServer): void {
         scope: z.enum(['project', 'global'])
           .optional()
           .describe('Install scope for Antigravity: project-local or user-global'),
-        userInvocable: z.boolean()
-          .optional()
-          .describe('Override: true installs to commands/ (slash command), false to skills/ (agent-only). If omitted, uses source frontmatter.'),
         forceInstall: z.boolean()
           .optional()
           .describe('Override security scan blocks (not recommended)'),
       },
     },
-    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope, userInvocable, forceInstall }) => {
+    async ({ skillPath, sourceRepoPath, sourceUrl, commit, capabilityId, targetAgent, workspaceRoot, scope, forceInstall }) => {
       const result = await installCapability({
         skillPath,
         sourceRepoPath,
@@ -189,7 +174,6 @@ export function registerInstallTool(server: McpServer): void {
         targetAgent: targetAgent as TargetAgent,
         workspaceRoot: workspaceRoot || process.cwd(),
         scope: scope as InstallScope | undefined,
-        userInvocable,
         forceInstall,
       });
 

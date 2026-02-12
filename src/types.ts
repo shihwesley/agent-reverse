@@ -15,7 +15,6 @@ export interface Capability {
   status: CapabilityStatus;
   extractedFrom: string;   // Source file in repo
   installedAt: string;     // ISO timestamp
-  userInvocable?: boolean; // If true, install to .claude/commands/ instead of .claude/skills/
 }
 
 export interface Manifest {

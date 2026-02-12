@@ -3,8 +3,8 @@
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
-import { readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { readFile, writeFile, mkdir } from 'fs/promises';
+import { join, dirname } from 'path';
 import { loadManifest, saveManifest, getCapability } from './manifest.js';
 import { parseSkillFile } from '../parsers/skill.js';
 import type {
@@ -160,7 +160,7 @@ export async function resolveConflict(
       }
 
       // Create synthesized skill file
-      const synthesizedPath = `.claude/skills/${newId}.md`;
+      const synthesizedPath = `.claude/skills/${newId}/SKILL.md`;
       const synthesizedContent = `---
 name: ${newId}
 description: Synthesized from ${options.existingId} and ${options.incomingId}
@@ -170,7 +170,9 @@ ${mergedContent}
 `;
 
       try {
-        await writeFile(join(workspaceRoot, synthesizedPath), synthesizedContent, 'utf-8');
+        const fullSynthPath = join(workspaceRoot, synthesizedPath);
+        await mkdir(dirname(fullSynthPath), { recursive: true });
+        await writeFile(fullSynthPath, synthesizedContent, 'utf-8');
       } catch {
         return {
           success: false,

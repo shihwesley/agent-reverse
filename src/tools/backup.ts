@@ -387,7 +387,7 @@ function convertPath(
 
   // Map to target agent paths
   const pathMappings: Record<TargetAgent, string> = {
-    'claude-code': `.claude/skills/${baseName}.md`,
+    'claude-code': `.claude/skills/${baseName}/SKILL.md`,
     'cursor': `.cursor/rules/${baseName}.mdc`,
     'antigravity': `.agent/skills/${baseName}/SKILL.md`,
     'custom': originalPath,

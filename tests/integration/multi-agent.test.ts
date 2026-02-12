@@ -52,7 +52,7 @@ Works everywhere.`);
     });
 
     expect(claudeResult.success).toBe(true);
-    expect(vol.existsSync('/claude-project/.claude/skills/universal-skill.md')).toBe(true);
+    expect(vol.existsSync('/claude-project/.claude/skills/universal-skill/SKILL.md')).toBe(true);
 
     // Install for Cursor
     vol.mkdirSync('/cursor-project', { recursive: true });
@@ -137,7 +137,7 @@ Works everywhere.`);
       targetAgent: 'claude-code',
       workspaceRoot: '/test-claude',
     });
-    expect(claudeResult.filesWritten).toContain('.claude/skills/test-skill.md');
+    expect(claudeResult.filesWritten).toContain('.claude/skills/test-skill/SKILL.md');
 
     // Test Cursor adapter
     vol.mkdirSync('/test-cursor', { recursive: true });
@@ -185,7 +185,7 @@ Important instructions that must be preserved.
 
     // Install to each agent type
     const projects = [
-      { path: '/claude', agent: 'claude-code' as const, file: '.claude/skills/content-test.md' },
+      { path: '/claude', agent: 'claude-code' as const, file: '.claude/skills/content-test/SKILL.md' },
       { path: '/cursor', agent: 'cursor' as const, file: '.cursor/rules/content-test.mdc' },
       { path: '/antigravity', agent: 'antigravity' as const, file: '.agent/skills/content-test/SKILL.md' },
     ];

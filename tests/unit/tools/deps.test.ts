@@ -108,8 +108,8 @@ dependencies: mid
 # Top`);
 
       // Create skill file for 'mid' that depends on 'bottom'
-      vol.mkdirSync('/repo/.claude/skills', { recursive: true });
-      vol.writeFileSync('/repo/.claude/skills/mid.md', `---
+      vol.mkdirSync('/repo/.claude/skills/mid', { recursive: true });
+      vol.writeFileSync('/repo/.claude/skills/mid/SKILL.md', `---
 name: Mid
 dependencies: bottom
 ---
