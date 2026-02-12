@@ -44,7 +44,7 @@ Options:
   --help, -h         Show this help
 
 Examples:
-  agent-reverse setup                               # Install skills to .claude/commands/
+  agent-reverse setup                               # Install skills to .claude/skills/<name>/
   agent-reverse analyze https://github.com/user/repo
   agent-reverse install my-skill --target cursor
   agent-reverse sync --workspace /path/to/project
@@ -284,44 +284,66 @@ async function cmdList(options: CliOptions): Promise<void> {
 }
 
 async function cmdSetup(options: CliOptions): Promise<void> {
-  const commandsDir = join(options.workspace, '.claude', 'commands');
-  await mkdir(commandsDir, { recursive: true });
-
-  // Get path to bundled skills (relative to dist/cli.js)
+  // Get path to bundled files (relative to dist/cli.js)
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
-  const skillsDir = join(__dirname, '..', 'skills');
+  const bundledSkillsDir = join(__dirname, '..', 'skills');
+  const bundledAgentsDir = join(__dirname, '..', 'agents');
 
+  // Install skills to .claude/skills/<name>/SKILL.md (directory convention)
+  const skillsBaseDir = join(options.workspace, '.claude', 'skills');
   const skills = [
-    { src: 'agent-reverse.md', dest: 'agent-reverse.md' },
-    { src: 'agent-reverse-update/SKILL.md', dest: 'agent-reverse-update.md' },
+    { src: 'agent-reverse.md', name: 'agent-reverse' },
+    { src: 'agent-reverse-update/SKILL.md', name: 'agent-reverse-update' },
   ];
 
   let installed = 0;
   for (const skill of skills) {
     try {
-      const content = await readFile(join(skillsDir, skill.src), 'utf-8');
-      await writeFile(join(commandsDir, skill.dest), content, 'utf-8');
-      console.log(`  ✓ Installed ${skill.dest}`);
+      const destDir = join(skillsBaseDir, skill.name);
+      await mkdir(destDir, { recursive: true });
+      const content = await readFile(join(bundledSkillsDir, skill.src), 'utf-8');
+      await writeFile(join(destDir, 'SKILL.md'), content, 'utf-8');
+      console.log(`  ✓ Installed skill: ${skill.name}`);
       installed++;
     } catch (err) {
-      console.error(`  ✗ Failed to install ${skill.dest}: ${err}`);
+      console.error(`  ✗ Failed to install skill ${skill.name}: ${err}`);
+    }
+  }
+
+  // Install subagents to .claude/agents/
+  const agentsDir = join(options.workspace, '.claude', 'agents');
+  await mkdir(agentsDir, { recursive: true });
+
+  const agents = [
+    { src: 'agent-reverse-engine.md', dest: 'agent-reverse-engine.md' },
+  ];
+
+  for (const agent of agents) {
+    try {
+      const content = await readFile(join(bundledAgentsDir, agent.src), 'utf-8');
+      await writeFile(join(agentsDir, agent.dest), content, 'utf-8');
+      console.log(`  ✓ Installed agent: ${agent.dest}`);
+      installed++;
+    } catch (err) {
+      console.error(`  ✗ Failed to install agent ${agent.dest}: ${err}`);
     }
   }
 
   if (options.json) {
-    output({ installed, commandsDir });
+    output({ installed, skillsDir: skillsBaseDir, agentsDir });
   } else {
-    console.log(`\n${installed} skills installed to ${commandsDir}`);
+    console.log(`\n${installed} files installed`);
     console.log(`
 Next: Add the MCP server to Claude Code:
 
   claude mcp add agent-reverse -- npx -y @shihwesley/agent-reverse agent-reverse-server
 
 Then restart Claude Code. You'll have access to:
-  - /agent-reverse analyze <url>  - Extract skills from repos
-  - /agent-reverse-update         - Check for skill updates
-  - 25 MCP tools for surgical extraction
+  - /agent-reverse analyze <url>  - Extract skills from repos (runs in subagent)
+  - /agent-reverse audit           - Health check your setup (runs in subagent)
+  - /agent-reverse-update          - Check for skill updates
+  - 30 MCP tools for surgical extraction
 `);
   }
 }

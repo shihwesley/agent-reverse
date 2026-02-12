@@ -6,6 +6,12 @@
 
 Extract tools, skills, and plugins from any source — GitHub repos, local configs, articles — and install only what you need. No cloning entire repositories for one function.
 
+## What's new in v2.1.0
+
+**Subagent support.** Heavy operations (`analyze`, `audit`, `sync`) now run in a dedicated `agent-reverse-engine` subagent. Repo cloning, AST parsing, and manifest diffing happen in an isolated context window instead of filling your main conversation. The subagent has persistent memory (`~/.claude/agent-memory/agent-reverse-engine/`), so it learns your repos and preferences across sessions. Light commands (`install`, `backup`, `check-updates`) still run inline. `npx agent-reverse setup` installs the subagent to `.claude/agents/` automatically.
+
+**Directory-based skills.** Skills now install to `.claude/skills/<name>/SKILL.md` instead of flat files, matching the current Claude Code convention. Existing flat files in `skills/` and `commands/` are still read for backward compatibility.
+
 ## What's new in v2.0.0
 
 **Security scanning.** Every `install_capability` call now runs through a security scanner before anything touches your config. Pattern-based (regex + AST), checks 6 categories: remote execution, data exfiltration, secret access, persistence, destructive operations, obfuscation. Critical findings block the install. Override with `forceInstall` if you know what you're doing.

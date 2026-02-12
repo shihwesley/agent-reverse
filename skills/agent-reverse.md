@@ -18,11 +18,34 @@ AgentReverse can reverse engineer **anything the user points it at**. Don't limi
 - Article URL → web synthesis (`web_interpret`)
 - No source specified → scan current environment and suggest improvements
 
+## Subagent delegation
+
+**Heavy operations run in the `agent-reverse-engine` subagent.** This keeps repo cloning, AST parsing, security scanning, and manifest diffing out of your main context.
+
+Delegate these commands to the subagent automatically:
+- `analyze` (all source types)
+- `audit`
+- `sync`
+
+When the subagent returns results, present them to the user and handle any follow-up (install confirmations, update approvals) in the main conversation.
+
+**Light operations stay inline** (no subagent needed):
+- `install`
+- `check-updates`
+- `backup` / `restore` / `backup-list`
+
 ## Commands
 
-### `/agent-reverse analyze <source>`
+### `/agent-reverse analyze <source>` — DELEGATE TO SUBAGENT
 
 Analyze any source for extractable capabilities.
+
+**Delegate to the `agent-reverse-engine` subagent** with the source argument. The subagent handles cloning, parsing, scanning, and cleanup. It returns a structured report.
+
+After receiving the subagent's results:
+1. Present the capabilities found
+2. Ask the user which to install
+3. Handle installs inline (see `/agent-reverse install` below)
 
 **Source types:**
 - `<github-url>` — clone and analyze a repo
@@ -30,36 +53,10 @@ Analyze any source for extractable capabilities.
 - `local` — scan your entire Claude Code environment
 - `<article-url>` — extract capabilities from a web article
 
-**Steps (GitHub repo):**
-1. Call `repo_fetch` with the URL
-2. Call `repo_analyze` on the cloned path
-3. Present capabilities found (skills, tools, plugins)
-4. For each, indicate if `user-invocable: true` (slash command) or agent-only
-5. Ask user which to install
-6. Call `repo_cleanup` when done
-
-**Steps (local environment):**
-1. Call `local_scan` to build/refresh the environment snapshot
-2. Present what's installed: skills, commands, hooks, MCP servers, settings
-3. Call `local_optimize` to detect issues (dead skills, deprecated configs, missing hooks)
-4. Present optimization recommendations
-5. Auto-apply safe fixes (after backup), prompt for breaking changes
-
-**Steps (local file/directory):**
-1. Read the file or scan the directory
-2. Parse for skill frontmatter, MCP tool definitions, config patterns
-3. Present what was found
-4. Offer to install or adapt into agent workflow
-
-**Steps (article URL):**
-1. Call `web_fetch` to extract content
-2. Call `web_interpret` to synthesize capabilities
-3. Present extracted skills/patterns
-4. Ask user which to install
-
-**Example (repo):**
+**Example:**
 ```
 User: /agent-reverse analyze https://github.com/anthropics/claude-code-plugins
+[Subagent runs: clone → analyze → cleanup]
 You: Found 5 capabilities, 2 MCP tools:
   1. code-review — Review PRs [/command]
   2. test-runner — Run tests [/command]
@@ -67,25 +64,9 @@ You: Found 5 capabilities, 2 MCP tools:
 Which to install?
 ```
 
-**Example (local):**
-```
-User: /agent-reverse analyze local
-You: Scanned Claude Code environment:
-  12 skills (2 dead — never referenced), 3 hooks, 2 MCP servers (1 unreachable)
-  Settings: 1 deprecated key found (allowedTools → permissions.allow)
-  Auto-fixed: renamed deprecated setting. Removed 2 dead skills.
-  Needs review: MCP server 'context7' not responding — remove?
-```
-
-**Example (file):**
-```
-User: /agent-reverse analyze ~/.cursor/rules/my-rule.mdc
-You: Found Cursor rule with 3 extractable patterns. Convert to Claude Code skill?
-```
-
 ### `/agent-reverse install <id>`
 
-Install a capability from a previously analyzed source.
+Install a capability from a previously analyzed source. Runs inline (no subagent).
 
 **Steps:**
 1. Verify source is still available (re-fetch repo if needed, re-read file if local)
@@ -93,18 +74,15 @@ Install a capability from a previously analyzed source.
    - CRITICAL findings (remote exec, data exfil) → block install, show report, require `--force` to override
    - MEDIUM findings (secret access, persistence) → show findings, ask user to confirm
    - LOW findings (destructive ops, obfuscation) → show in report, proceed
-3. **Determine user-invocable status:**
-   - Source has `user-invocable: true` → install as `/command`
-   - Source doesn't specify → ask: "Install as `/command` or agent-only skill?"
-4. Call `install_capability` with appropriate settings
-5. Report: files written, directory, whether `/command` is available
+3. Call `install_capability` with appropriate settings
+4. Report: files written, directory, whether `/command` is available
 
 **Example (clean install):**
 ```
 User: /agent-reverse install code-review
 You: Security scan: clear (0/10 risk).
-  Installed code-review → .claude/commands/code-review.md
-  Available as /code-review. Added to manifest.
+  Installed code-review → .claude/skills/code-review/SKILL.md
+  Added to manifest.
 ```
 
 **Example (security finding):**
@@ -115,37 +93,31 @@ You: Security scan found issues:
   Install blocked. Use --force to override (not recommended).
 ```
 
-### `/agent-reverse sync`
+### `/agent-reverse sync` — DELEGATE TO SUBAGENT
 
 Reinstall all capabilities from the manifest.
 
-**Steps:**
-1. Call `manifest_sync`
-2. Report installed/failed/skipped counts
-3. List failures with error messages
-
-**Use case:** New environment setup or recovery after cleanup.
+**Delegate to the `agent-reverse-engine` subagent.** It handles the full sync and returns installed/failed/skipped counts.
 
 **Example:**
 ```
 User: /agent-reverse sync
+[Subagent runs manifest_sync]
 You: Synced 5 capabilities. 5 installed, 0 failed, 1 skipped (superseded).
 ```
 
-### `/agent-reverse audit`
+### `/agent-reverse audit` — DELEGATE TO SUBAGENT
 
-Check for bloat, duplicates, security issues, and optimization opportunities across your entire setup.
+Check for bloat, duplicates, security issues, and optimization opportunities.
 
-**Steps:**
-1. Call `local_scan` to refresh environment state
-2. Call `manifest_list` for tracked capabilities
-3. Scan local skills directory for untracked files
-4. Identify duplicates, dead skills, deprecated configs
-5. Report findings and suggest actions
+**Delegate to the `agent-reverse-engine` subagent.** It cross-references the manifest against the local environment and returns a structured report.
+
+After receiving results, present findings and offer to act on recommendations.
 
 **Example:**
 ```
 User: /agent-reverse audit
+[Subagent runs local_scan + manifest_list + cross-reference]
 You: 12 skills installed (3 untracked), 2 potential duplicates.
   Dead: helper-utils (never referenced). Deprecated: 1 setting.
   MCP servers: 2 healthy, 1 unreachable.
@@ -153,7 +125,7 @@ You: 12 skills installed (3 untracked), 2 potential duplicates.
 
 ### `/agent-reverse check-updates`
 
-Check if installed capabilities have newer versions, and check if Claude Code itself has updated.
+Check if installed capabilities have newer versions, and check if Claude Code itself has updated. Runs inline (no subagent).
 
 **Steps:**
 1. Call `manifest_check_updates` for capability versions
@@ -173,7 +145,7 @@ You: Capabilities: 2 outdated (code-review, test-runner).
 
 ### `/agent-reverse backup [options]`
 
-Create a backup of all capabilities, skills, and configs.
+Create a backup of all capabilities, skills, and configs. Runs inline (no subagent).
 
 **Steps:**
 1. Call `backup_create` with options:
@@ -191,7 +163,7 @@ You: Backup uploaded: https://gist.github.com/user/abc123 (11 capabilities, 16 f
 
 ### `/agent-reverse restore <source>`
 
-Restore capabilities from a backup.
+Restore capabilities from a backup. Runs inline (no subagent).
 
 **Steps:**
 1. Call `backup_list` to preview contents
@@ -211,7 +183,7 @@ You: Cross-agent restore: claude-code → cursor. Restored 8 capabilities.
 
 ### `/agent-reverse backup-list <source>`
 
-Preview backup contents without restoring.
+Preview backup contents without restoring. Runs inline (no subagent).
 
 **Steps:**
 1. Call `backup_list` with the source path/URL
