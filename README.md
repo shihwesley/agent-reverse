@@ -1,41 +1,46 @@
-# 🧬 AgentReverse
+# AgentReverse
 
 [![npm](https://img.shields.io/npm/v/@shihwesley/agent-reverse)](https://www.npmjs.com/package/@shihwesley/agent-reverse)
 [![MCP](https://img.shields.io/badge/MCP-Server-blue.svg)](https://modelcontextprotocol.io/)
-[![Protocol](https://img.shields.io/badge/Agent-Portable-green.svg)](#portability)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-> **"Stop the bloat. Maximize the context. Extract the DNA."**
+Extract tools, skills, and plugins from any source — GitHub repos, local configs, articles — and install only what you need. No cloning entire repositories for one function.
 
-**AgentReverse** is a surgical integration engine designed to eliminate agent/plugin bloat. Instead of cloning entire repositories just for a single feature, AgentReverse reverse-engineers tools, skills, and plugins to extract only the essential logic—surgically implanting them into your current workflow.
+## What's new in v2.0.0
 
----
+**Security scanning.** Every `install_capability` call now runs through a security scanner before anything touches your config. Pattern-based (regex + AST), checks 6 categories: remote execution, data exfiltration, secret access, persistence, destructive operations, obfuscation. Critical findings block the install. Override with `forceInstall` if you know what you're doing.
 
-## 📦 Installation
+**Local introspection.** `local_scan` inventories your entire Claude Code environment — skills, commands, hooks, MCP servers, keybindings, binary version. `local_optimize` finds dead skills, deprecated settings, duplicate scopes. Results are cached with SHA256 file hashes so repeat calls only rescan changed files.
 
-### Quick Start (Claude Code)
+**Changelog awareness.** `changelog_check` compares your Claude Code version against a local cache. When it detects a version bump, it fetches changelogs from npm + GitHub, matches against migration rules, and auto-applies safe changes. Breaking changes require your approval. No cost when the version hasn't changed.
+
+**30 MCP tools** total (up from 26).
+
+## Installation
+
+### Quick start (Claude Code)
 
 ```bash
-# Step 1: Add MCP server
+# Add MCP server
 claude mcp add agent-reverse -- npx -y @shihwesley/agent-reverse agent-reverse-server
 
-# Step 2: Install slash commands (run from your project directory)
+# Install slash commands (run from your project directory)
 npx -y @shihwesley/agent-reverse setup
 ```
 
-Restart Claude Code. You now have:
-- **30 MCP tools** for surgical extraction, security scanning, and local introspection
-- **/agent-reverse** - Reverse engineer capabilities from repos, local configs, articles, or your own Claude Code setup
-- **/agent-reverse-update** - Check for skill updates and Claude Code version changes on session start
+Restart Claude Code. You get:
+- 30 MCP tools for extraction, analysis, security scanning, and local introspection
+- `/agent-reverse` — reverse engineer capabilities from repos, local configs, articles, or your own setup
+- `/agent-reverse-update` — check for skill updates and Claude Code version changes
 
 ### Upgrading
 
 ```bash
-# Re-run setup to get latest skills (MCP auto-updates via npx)
+# Re-run setup for latest skills (MCP auto-updates via npx)
 npx -y @shihwesley/agent-reverse@latest setup
 ```
 
-### Global Install (Optional)
+### Global install (optional)
 
 ```bash
 npm install -g @shihwesley/agent-reverse
@@ -46,54 +51,27 @@ agent-reverse setup
 agent-reverse --help
 ```
 
-### From Source (Development)
+### From source
 
 ```bash
 git clone https://github.com/shihwesley/agent-reverse.git
 cd agent-reverse
-npm install
-npm run build
+npm install && npm run build
 
-# Run MCP server locally
+# MCP server
 claude mcp add agent-reverse -- node dist/server.js
 
-# Run CLI locally
+# CLI
 node dist/cli.js setup
 node dist/cli.js --help
 ```
 
----
+## How it works
 
-## ⚡ The Philosophy: "Every Token Counts"
+AgentReverse is two things:
 
-In the era of AI agents, your **context window is your most valuable resource**.
-Typical agent setups suffer from:
-
-- **📦 Bloat**: Installing 100 files for 1 function.
-- **📉 Context Shrinkage**: Redundant prompts and redundant code eating your token budget.
-- **🧱 Fragmentation**: Skills scattered across GitHub with no unified way to sync them.
-
-**AgentReverse solves this.** It treats agent capabilities like `requirements.txt` for Python—providing a leaner, faster, and smarter workflow.
-
----
-
-## ✨ Key Features
-
-- **🔬 Surgical Extraction**: Point to any GitHub repo, and AgentReverse isolates the "DNA" (tools, skills, or prompts) you actually need.
-- **📑 Agent Requirements Manifest**: A universal `agent-reverse.json` file that tracks your capabilities, source commits, and dependencies.
-- **🔄 Zero-Friction Sync**: Move from **Claude Code** to **Cursor** or **Antigravity**? One command restores your entire custom agent setup.
-- **🧩 Synthesis Engine**: Detected a better way to do search in a new repo? AgentReverse can merge it with your existing tools to create a "superskill."
-- **🕵️ Audit & Slim**: Scan your current messy `skills/` folders. Identify duplicates, find dead weight, and propose a consolidation plan.
-- **📖 Research Interpreter**: Give it a blog post or a whitepaper (e.g., *Reasoning with Language Models*). It synthesizes the concept directly into a working agent skill.
-
----
-
-## 🏗️ How It Works (Hybrid Architecture)
-
-AgentReverse operates as a **Hybrid System**:
-
-1. **MCP Server**: A universal engine that handles the "heavy lifting"—fetching repos, parsing ASTs, and managing the manifest.
-2. **Skills Layer**: Proactive UX that lives inside your agent (Claude Code, etc.), observing your workflow and suggesting optimizations when things feel "high friction."
+1. **MCP server** — fetches repos, parses ASTs, manages the manifest, runs security scans. This is the engine.
+2. **Skills layer** — lives inside your agent (Claude Code, Cursor, etc.), watches your workflow, and suggests capabilities when friction is high.
 
 ```mermaid
 graph TD
@@ -104,140 +82,161 @@ graph TD
     AR -->|Record| Manifest[agent-reverse.json]
 ```
 
----
+The manifest (`agent-reverse.json`) tracks every installed capability — source repo, pinned commit, dependencies. Think `package-lock.json` but for agent skills.
 
-## 🌍 Agent Portability
+## Usage
 
-Supported target systems:
+### Analyze a repo
 
-- [x] **Claude Code** (`.claude/skills/`)
-- [x] **Antigravity** (`skills/`)
-- [x] **Cursor** (`.cursor/rules/`)
-- [ ] **Custom Adapters** (Coming soon)
-
----
-
-## 🚀 Usage Peek
-
-### 🔍 Analyze a Repo
-
-```bash
+```
 /agent-reverse analyze https://github.com/cool-user/search-plugin
 ```
 
-*Result: A categorized "Bill of Materials" of every skill and tool inside.*
+Returns a categorized bill of materials: every skill, tool, and prompt in the repo.
 
-### 🧬 Extract & Install
+### Analyze your local setup
 
-```bash
+```
+/agent-reverse analyze local
+```
+
+Scans your Claude Code environment for dead skills, deprecated settings, and optimization opportunities.
+
+### Extract and install
+
+```
 /agent-reverse install search-lite --target claude
 ```
 
-*Result: Installs the tool, updates CLAUDE.md, and pins the commit in your manifest.*
+Installs the capability, updates CLAUDE.md, and pins the commit in your manifest.
 
-### 🔄 Sync Your Life
+### Sync across machines
 
-```bash
+```
 /agent-reverse sync
 ```
 
-*Result: Re-plants all your capabilities into a fresh environment.*
+Re-installs all capabilities from your manifest into a fresh environment.
 
----
+## Security scanning
 
-## 💾 Backup & Restore
+Every install runs through 6 security checks before writing files:
 
-Export your entire AgentReverse setup for portability across machines or agent platforms.
+| Category | What it catches |
+|----------|----------------|
+| Remote execution | Shell spawns, eval, child_process |
+| Data exfiltration | Outbound HTTP with file reads, DNS exfil |
+| Secret access | Reads of .env, credentials, API keys |
+| Persistence | Cron jobs, startup scripts, auto-run hooks |
+| Destructive operations | rm -rf, file overwrites, git force-push |
+| Obfuscation | Base64 payloads, hex encoding, string construction |
 
-### What Gets Backed Up
+Critical findings block the install. Medium findings warn. Low findings inform. Use `forceInstall` to override if you've reviewed the code.
 
-| Item | Path | Description |
-|------|------|-------------|
-| Manifest | `agent-reverse.json` | Installed capabilities list |
-| Skills | `.claude/skills/*.md` | Claude Code skills |
-| Commands | `.claude/commands/*.md` | User-invocable commands |
-| Rules | `.cursor/rules/*.mdc` | Cursor rules |
-| CLAUDE.md | `CLAUDE.md` | Project instructions |
-| Caches | `workflow-cache.json`, `known-repos.json` | Observer patterns & watched repos |
+## Agent portability
 
-### Create a Backup
+Supported targets:
+
+| Agent | Config path | Status |
+|-------|------------|--------|
+| Claude Code | `.claude/skills/` | Supported |
+| Cursor | `.cursor/rules/` | Supported |
+| Antigravity | `skills/` | Supported |
+| Custom adapters | — | Planned |
+
+## Backup and restore
+
+Export your setup for portability across machines or agent platforms.
+
+### What gets backed up
+
+| Item | Path |
+|------|------|
+| Manifest | `agent-reverse.json` |
+| Skills | `.claude/skills/*.md` |
+| Commands | `.claude/commands/*.md` |
+| Rules | `.cursor/rules/*.mdc` |
+| CLAUDE.md | `CLAUDE.md` |
+| Caches | `workflow-cache.json`, `known-repos.json` |
+
+### Create a backup
 
 ```bash
-# Backup to local file (default: agent-reverse-backup-<date>.json)
+# Local file (default: agent-reverse-backup-<date>.json)
 agent-reverse backup
 
-# Backup with custom filename
+# Custom filename
 agent-reverse backup --output my-backup.json
 
-# Backup to GitHub Gist (private)
+# Private GitHub Gist
 agent-reverse backup --gist
 
-# Backup to public Gist
+# Public Gist
 agent-reverse backup --gist --gist-public
 
-# Backup to GitHub repo
+# GitHub repo
 agent-reverse backup --repo myuser/agent-backups
 ```
 
-### Restore from Backup
+### Restore from backup
 
 ```bash
-# Restore from local file
+# From local file
 agent-reverse restore backup.json
 
-# Restore from Gist URL
+# From Gist
 agent-reverse restore https://gist.github.com/user/abc123
 
-# Restore from GitHub repo
+# From GitHub repo
 agent-reverse restore https://github.com/user/backups/blob/main/backups/2026-01-26.json
 ```
 
-### Cross-Agent Restore
-
-Migrate your setup between different agent platforms:
+### Cross-agent restore
 
 ```bash
-# Restore Claude skills to Cursor
+# Restore Claude skills to Cursor format
 agent-reverse restore backup.json --target cursor
 
-# Preview what would be restored (dry run)
+# Dry run
 agent-reverse restore backup.json --target cursor --dry-run
 ```
 
-*Result: Skills from `.claude/skills/foo.md` become `.cursor/rules/foo.mdc`*
-
-### Restore Options
+### Restore flags
 
 | Flag | Description |
 |------|-------------|
-| `--target <agent>` | Convert to different agent: `claude-code`, `cursor`, `antigravity` |
+| `--target <agent>` | Convert to: `claude-code`, `cursor`, `antigravity` |
 | `--merge` | Merge with existing setup instead of replacing |
 | `--force` | Overwrite existing files |
 | `--dry-run` | Preview changes without writing |
 
-### MCP Tools
+## MCP tools reference
 
-For programmatic access:
-- `backup_create` - Create backup archive
-- `backup_restore` - Restore from backup
-- `backup_list` - List backup contents without restoring
+| Tool family | Tools | Purpose |
+|-------------|-------|---------|
+| `repo_*` | `repo_fetch`, `repo_analyze`, `repo_cleanup` | Fetch and analyze GitHub repos |
+| `manifest_*` | `manifest_add`, `manifest_remove`, `manifest_get`, `manifest_list`, `manifest_audit`, `manifest_sync`, `manifest_check_updates` | Manage the capability manifest |
+| `install_capability` | — | Install with security gate |
+| `conflict_*` | `conflict_check`, `conflict_resolve` | Detect and resolve skill conflicts |
+| `deps_*` | `deps_check`, `deps_resolve` | Dependency analysis |
+| `observer_*` | `observer_log`, `observer_get_patterns`, `observer_clear` | Workflow pattern observation |
+| `suggester_*` | `suggester_check`, `suggester_add_repo`, `suggester_list_repos` | Capability suggestions |
+| `web_*` | `web_fetch`, `web_interpret` | Extract skills from articles and docs |
+| `backup_*` | `backup_create`, `backup_restore`, `backup_list` | Backup and restore |
+| `security_scan` | — | Pattern-based security analysis |
+| `local_*` | `local_scan`, `local_optimize` | Environment introspection |
+| `changelog_check` | — | Version-aware auto-migration |
 
----
+## Documentation
 
-## 🧪 Documentation
+- [PRD](./docs/PRD.md) — vision and roadmap
+- [Tech spec](./docs/spec.md) — architecture and JSON schemas
+- [Test cases](./docs/test_case.md) — real-world usage scenarios
 
-Explore the deep dives:
+## Contributing
 
-- 📄 [PRD](./docs/PRD.md) - Vision and roadmap.
-- 🛠️ [Tech Spec](./docs/spec.md) - Architecture and JSON schemas.
-- 📋 [Test Cases](./docs/test_case.md) - 15+ real-world usage scenarios.
+PRs for new agent adapters or language parsers are welcome. See the [tech spec](./docs/spec.md) for architecture details.
 
----
+## License
 
-## 🤝 Contributing
-
-AgentReverse is for the community of "Vibe Coders" and Engineers who want a cleaner, faster Future of Coding. PRs for new **Agent Adapters** or **Language Parsers** are highly encouraged.
-
----
-
-**Build smarter. Code leaner. Reverse the bloat.** 🧬✨
+MIT
