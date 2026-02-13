@@ -1,0 +1,21 @@
+{
+  "name": "agent-reverse",
+  "version": "2.1.0",
+  "description": "Reverse engineer and extract capabilities from any source — repos, configs, binaries, articles — into your agent workflow. Security scanning, manifest tracking, cross-agent restore.",
+  "author": {
+    "name": "shihwesley",
+    "email": "shihwesley@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/shihwesley/agent-reverse",
+  "repository": "https://github.com/shihwesley/agent-reverse",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agent",
+    "skills",
+    "reverse-engineering",
+    "security",
+    "manifest"
+  ]
+}

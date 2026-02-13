@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "agent-reverse": {
+      "command": "npx",
+      "args": ["-y", "@shihwesley/agent-reverse", "agent-reverse-server"],
+      "env": {}
+    }
+  }
+}
