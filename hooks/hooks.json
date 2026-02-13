@@ -1,13 +1,15 @@
 {
-  "hooks": [
-    {
-      "matcher": "SessionStart",
-      "hooks": [
-        {
-          "type": "command",
-          "command": "if [ -f agent-reverse.json ]; then RESULT=$(npx -y @shihwesley/agent-reverse check-updates --json 2>/dev/null); OUTDATED=$(echo \"$RESULT\" | jq '.outdated | length' 2>/dev/null); [ \"$OUTDATED\" -gt 0 ] && echo \"[AgentReverse] $OUTDATED update(s) available\"; fi"
-        }
-      ]
-    }
-  ]
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -f agent-reverse.json ]; then RESULT=$(npx -y @shihwesley/agent-reverse check-updates --json 2>/dev/null); OUTDATED=$(echo \"$RESULT\" | jq '.outdated | length' 2>/dev/null); [ \"$OUTDATED\" -gt 0 ] && echo \"[AgentReverse] $OUTDATED update(s) available\"; fi"
+          }
+        ]
+      }
+    ]
+  }
 }
