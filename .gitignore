@@ -17,3 +17,9 @@ docs/SIMPLIFICATION_LOG.md
 docs/plans/
 SIMPLIFICATION_LOG.md
 coverage/
+
+# Local Claude Code settings
+.claude/settings.json
+
+# Mercator cache
+docs/.mercator.json
