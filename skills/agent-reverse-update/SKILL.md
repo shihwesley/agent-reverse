@@ -1,6 +1,6 @@
 ---
 name: agent-reverse-update
-description: Check for AgentReverse skill updates on session start
+description: "Check for AgentReverse skill updates and Claude Code changelog changes on session start. Runs automatically via SessionStart hook — compares installed versions against remote, applies safe migrations, and flags breaking changes. Use when user says /agent-reverse-update to manually trigger an update check."
 user-invocable: true
 hooks:
   SessionStart:

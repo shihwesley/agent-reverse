@@ -1,6 +1,6 @@
 ---
 name: agent-reverse
-description: Reverse engineer and extract capabilities from any source — repos, local configs, binaries, articles, settings — into your agent workflow
+description: "Reverse engineer and extract capabilities from any source — GitHub repos, local Claude Code configs, installed binaries, articles, or raw settings files. Use when user says /agent-reverse, wants to analyze a repo for extractable skills, audit their local Claude setup, install capabilities from external sources, or sync their skill manifest. Includes security scanning, manifest tracking, and cross-agent restore."
 ---
 
 # AgentReverse
